@@ -1,0 +1,4 @@
+name: FADCR
+version: '1.0-SNAPSHOT'
+main: info.asdev.fadcr.FADCR
+api-version: '1.16'
