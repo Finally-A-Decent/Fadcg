@@ -8,6 +8,10 @@ public class GuiManager {
 
     }
 
+    public void shutdown() {
+
+    }
+
     public static GuiManager getInstance() {
         return instance == null ? instance = new GuiManager() : instance;
     }

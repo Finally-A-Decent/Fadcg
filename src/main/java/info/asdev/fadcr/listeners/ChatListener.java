@@ -10,6 +10,10 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class ChatListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
-        ChatManager.getInstance().processChatMessage(event.getMessage());
+        if (!ChatManager.getInstance().isRunning() || event.isCancelled()) {
+            return;
+        }
+
+        ChatManager.getInstance().processChatMessage(event.getPlayer(), event.getMessage());
     }
 }

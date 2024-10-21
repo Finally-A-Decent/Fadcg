@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 
 @RequiredArgsConstructor
-public class ReactionSolve implements Reaction{
+public class ReactionSolve implements Reaction {
     @Getter private final String id, displayName;
 
     @Override public boolean attempt(Player who, String message) {

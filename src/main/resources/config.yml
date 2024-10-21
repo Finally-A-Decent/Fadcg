@@ -1,0 +1,54 @@
+# Changes to this value could result in your plugin not loading or your config being corrupted.
+version: 1.0
+
+# Update checker
+update-checker:
+    enabled: true
+    notification-permission: fadcr.update.notify
+
+options:
+  case-sensitive-answers: true
+#######################################################################################################################################
+## Reactions
+## If you want to suggest a chat reaction type, or need to ask for help, you can do so in our Discord: https://discord.gg/GGCk3zdgQP
+##
+## For Unscramble and Type reactions, the answer is used as the question.
+## The only difference is that `unscramble` answers are automatically scrambled before being sent in chat.
+## For instance, 'Enderman' would become along the lines of 'mnaEdnre', however it won't always be exactly that.
+##
+## Valid Types (as of 1.0): [UNSCRAMBLE, TYPE, SOLVE]
+#######################################################################################################################################
+reactions:
+  unscramble_enderman:
+    type: 'unscramble'
+    answer: 'Enderman'
+    reward: 'random'
+  type_fadcr:
+    type: 'type'
+    answer: 'FADCR'
+    reward: 'random'
+  solve_150:
+    type: 'solve'
+    question: '100 + 50'
+    answer: '150'
+    reward: 'eight_oak_logs'
+
+#################################################################################################################################################
+## Rewards
+## These are the possible rewards a player can get for winning a chat reaction
+## If you want to randomly set what reward the player gets (which then uses the chance value), set the 'reward' key in the reaction to 'random'
+## Otherwise, set it to the key of the reward, for example 'one_diamond' or 'eight_oak_logs'
+#################################################################################################################################################
+rewards:
+  one_diamond:
+    chance: 10.5
+    commands:
+      - 'give {player} diamond 1'
+  eight_oak_logs:
+    chance: 30.5
+    commands:
+      - 'give {player} oak_log 8'
+  twenty_xp:
+    chance: 59
+    commands:
+      - 'minecraft:xp add {player} 20'

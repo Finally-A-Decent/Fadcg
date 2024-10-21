@@ -2,6 +2,7 @@ package info.asdev.fadcr.utils;
 
 
 import info.asdev.fadcr.FADCR;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.Duration;
@@ -10,6 +11,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 /**
  * Represents a job that gets run on a thread.
@@ -23,6 +25,7 @@ public abstract class Job {
     private final Duration interval;
     private boolean silent = false;
     private ScheduledFuture<?> future;
+    @Getter private boolean active;
 
     public Job(String name, Duration interval, boolean silent) {
         this.name = name;
@@ -57,6 +60,7 @@ public abstract class Job {
     }
 
     public final void start() {
+        active = true;
         future = scheduler.scheduleAtFixedRate(this::run,
                 interval.toMillis(), interval.toMillis(), TimeUnit.MILLISECONDS);
         FADCR.getInstance().getLogger().info("[JOBS] Job '%s' scheduled at an interval of %s seconds".formatted(this.name, interval.get(ChronoUnit.SECONDS)));
@@ -75,6 +79,7 @@ public abstract class Job {
     }
 
     public final void shutdown() {
+        active = false;
         future.cancel(true);
         log("[JOBS] Job '%s' shutdown!".formatted(this.name));
     }
