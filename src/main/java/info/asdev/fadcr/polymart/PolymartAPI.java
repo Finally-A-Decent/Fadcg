@@ -149,7 +149,7 @@ public class PolymartAPI {
     @Builder
     private static class UpdateUrlParams extends Jsonable  {
         private String inject_version, resource_id, user_id, nonce, download_agent, download_time, download_token;
-        private int allowRedirects = 0;
+        @Builder.Default private int allowRedirects = 0;
     }
 
 }

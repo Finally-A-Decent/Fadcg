@@ -1,15 +1,14 @@
 package info.asdev.fadcr.utils;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
 import java.util.Random;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@UtilityClass
 public class Util {
-    static Random random = new Random();
+    Random random = new Random();
 
-    public static String scramble(String original) {
+    public String scramble(String original) {
         if (!original.contains(" ")) {
             return scramble2(original);
         }
@@ -24,7 +23,7 @@ public class Util {
         return builder.substring(1);
     }
 
-    private static String scramble2(String in) {
+    private String scramble2(String in) {
         char[] characters = in.toCharArray();
 
         for (int i = characters.length - 1; i > 0; i--) {

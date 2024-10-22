@@ -26,9 +26,7 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:1.18.30"
     compileOnly "org.projectlombok:lombok:1.18.30"
 
-    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
     compileOnly 'me.clip:placeholderapi:2.11.6'
-
 }
 
 def targetJavaVersion = 21

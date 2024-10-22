@@ -2,6 +2,7 @@ package info.asdev.fadcr;
 
 import info.asdev.fadcr.chat.ChatManager;
 import info.asdev.fadcr.gui.GuiManager;
+import info.asdev.fadcr.listeners.ChatListener;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,6 +28,8 @@ public final class FADCR extends JavaPlugin {
             return;
         }
 
+        Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
+
         ChatManager.getInstance().init();
         GuiManager.getInstance().init();
     }
@@ -39,6 +42,7 @@ public final class FADCR extends JavaPlugin {
 
     private boolean checkConfig() {
         double detectedVersion = getConfig().getDouble("version");
+
         if (detectedVersion < MIN_CONFIG_VERSION) {
             getLogger().severe(String.format("Unable to continue, unsupported config version detected (%s). You may want to migrate to a new config.", detectedVersion));
             Bukkit.getPluginManager().disablePlugin(this);

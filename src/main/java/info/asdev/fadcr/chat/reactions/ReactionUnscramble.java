@@ -10,6 +10,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class ReactionUnscramble implements Reaction {
     @Getter private final String id, displayName;
+    @Getter private ReactionImpl implementation;
     private String answer;
     private String question;
 
@@ -24,10 +25,17 @@ public class ReactionUnscramble implements Reaction {
             Random random = getChatManager().getRandom();
             ReactionImpl[] impls = getChatManager().getReactionsById(id);
 
-            answer = impls[random.nextInt(impls.length - 1)].getAnswer();
+            implementation = impls.length == 1 ? impls[0] : impls[random.nextInt(impls.length)];
+            answer = implementation.getAnswer();
             return question = Util.scramble(answer);
         }
 
         return question;
     }
+
+    @Override public void reset() {
+        answer = null;
+        question = null;
+    }
+
 }

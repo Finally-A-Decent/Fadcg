@@ -1,4 +1,4 @@
-# Changes to this value could result in your plugin not loading or your config being corrupted.
+# Changes to this value could result in the plugin not loading or your config being corrupted.
 version: 1.0
 
 # Update checker
@@ -8,6 +8,10 @@ update-checker:
 
 options:
   case-sensitive-answers: true
+  interval: 300000
+  timeout: 60000
+  min-players: 2
+
 #######################################################################################################################################
 ## Reactions
 ## If you want to suggest a chat reaction type, or need to ask for help, you can do so in our Discord: https://discord.gg/GGCk3zdgQP
@@ -41,14 +45,17 @@ reactions:
 #################################################################################################################################################
 rewards:
   one_diamond:
+    display_name: "One Diamond"
     chance: 10.5
     commands:
       - 'give {player} diamond 1'
   eight_oak_logs:
+    display_name: "8 Oak Logs"
     chance: 30.5
     commands:
       - 'give {player} oak_log 8'
   twenty_xp:
+    display_name: "20 XP"
     chance: 59
     commands:
       - 'minecraft:xp add {player} 20'

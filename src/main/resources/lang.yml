@@ -4,7 +4,7 @@
 #    If you want any changes here, please let me know.
 ###############################################################################################################
 
-# Changes to this value could result in your plugin not loading or your config being corrupted.
+# Changes to this value could result in the plugin not loading or your config being corrupted.
 version: 1.0
 
 prefix:
@@ -12,7 +12,10 @@ prefix:
   prefix: "&#9555ff&lFADCR &8&l>&r "
 
 chat-reaction:
-  reaction-expired: "Too late! The answer was {0}"
+  reaction-expired: "Too late! The answer was &c{0}"
+  reaction-cancelled-not-enough-players: "&cThe chat reaction was cancelled as there are not enough players."
+  solved-by: "&c{0}&f solved the chat reaction in &c{1}&f seconds."
+  time-format: "##.##"
   center-reaction-format: true
   # {0} here is the reaction type, so 'unscramble', 'solve', etc.
   # It will be auto resolved to the corresponding reaction message in the 'reactions' section below.

@@ -10,7 +10,9 @@ public interface Reaction {
     String getDisplayName();
     boolean attempt(Player who, String message);
 
+    ReactionImpl getImplementation();
     String getQuestion();
+    void reset();
 
     default FADCR getPlugin() {
         return FADCR.getInstance();
@@ -22,5 +24,9 @@ public interface Reaction {
 
     default ChatManager getChatManager() {
         return ChatManager.getInstance();
+    }
+
+    default ReactionImpl[] getReactions() {
+        return getChatManager().getReactionsById(getId());
     }
 }
