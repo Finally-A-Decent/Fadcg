@@ -22,7 +22,7 @@ chat-reaction:
   format:
     - " "
     - "&lCHAT REACTION"
-    - "{0}"
+    - "&r{0}"
     - " "
 
 # When setting these, make sure you include {0}, as this is the actual question contents.
