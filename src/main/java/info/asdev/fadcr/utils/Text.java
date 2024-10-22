@@ -140,9 +140,13 @@ public final class Text {
     public void send(Player player, String key, Object... replacements) {
         FileConfiguration lang = FADCR.getLang();
         String message = lang.getString(key);
+
         if (message == null) {
             FADCR.getInstance().getLogger().warning("Message key " + key + " is null. Cannot send.");
             return;
+        }
+        if (FADCR.papi()) {
+            message = TextPapi.setPlaceholders(player, message);
         }
 
         for (int i = 0; i < replacements.length; i++) {
@@ -160,6 +164,10 @@ public final class Text {
         if (message == null) {
             FADCR.getInstance().getLogger().warning("Message is null. Cannot send.");
             return;
+        }
+
+        if (FADCR.papi()) {
+            message = TextPapi.setPlaceholders(player, message);
         }
 
         for (int i = 0; i < replacements.length; i++) {

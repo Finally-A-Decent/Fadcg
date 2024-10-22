@@ -1,11 +1,6 @@
 # Changes to this value could result in the plugin not loading or your config being corrupted.
 version: 1.0
 
-# Update checker
-update-checker:
-    enabled: true
-    notification-permission: fadcr.update.notify
-
 options:
   case-sensitive-answers: true
   interval: 300000
@@ -23,19 +18,131 @@ options:
 ## Valid Types (as of 1.0): [UNSCRAMBLE, TYPE, SOLVE]
 #######################################################################################################################################
 reactions:
+  solve_two_pow_8:
+    type: "solve"
+    question: "2⁸"
+    answer: '256'
+    reward: 'random'
+  threefourfivesix:
+    type: "solve"
+    question: "34+56"
+    answer: '90'
+    reward: 'random'
+  seventwoeightnine:
+    type: "solve"
+    question: "72+89"
+    answer: '161'
+    reward: 'random'
+  fourfiveseveneight:
+    type: "solve"
+    question: "45+78"
+    answer: '123'
+    reward: 'random'
+  sixsixeightseven:
+    type: "solve"
+    question: "66+87"
+    answer: '153'
+    reward: 'random'
+  nineonefiveeight:
+    type: "solve"
+    question: "91+58"
+    answer: '149'
+    reward: 'random'
+  type_monster:
+    type: "type"
+    question: "Monster"
+    answer: "Monster"
+    reward: 'random'
   unscramble_enderman:
-    type: 'unscramble'
-    answer: 'Enderman'
+    type: "unscramble"
+    question: "Enderman"
+    answer: "Enderman"
     reward: 'random'
-  type_fadcr:
-    type: 'type'
-    answer: 'FADCR'
+  unscramble_blue:
+    type: "unscramble"
+    question: "Blue"
+    answer: "Blue"
     reward: 'random'
-  solve_150:
-    type: 'solve'
-    question: '100 + 50'
-    answer: '150'
-    reward: 'eight_oak_logs'
+  unscramble_endermite:
+    type: "unscramble"
+    question: "Endermite"
+    answer: "Endermite"
+    reward: 'random'
+  unscramble_blaze:
+    type: "unscramble"
+    question: "Blaze"
+    answer: "Blaze"
+    reward: 'random'
+  unscramble_dragon:
+    type: "unscramble"
+    question: "Dragon"
+    answer: "Dragon"
+    reward: 'random'
+  unscramble_amethyst:
+    type: "unscramble"
+    question: "Amethyst"
+    answer: "Amethyst"
+    reward: 'random'
+  unscramble_diamond:
+    type: "unscramble"
+    question: "Diamond"
+    answer: "Diamond"
+    reward: 'random'
+  unscramble_iron:
+    type: "unscramble"
+    question: "Iron"
+    answer: "Iron"
+    reward: 'random'
+  unscramble_Cactus:
+    type: "unscramble"
+    question: "Cactus"
+    answer: "Cactus"
+    reward: 'random'
+  unscramble_flower:
+    type: "unscramble"
+    question: "Flower"
+    answer: "Flower"
+    reward: 'random'
+  type_wheat:
+    type: "type"
+    question: "Wheat"
+    answer: "Wheat"
+    reward: 'random'
+  type_Axolotl:
+    type: "type"
+    question: "Axolotl"
+    answer: "Axolotl"
+    reward: 'random'
+  unscramble_gold:
+    type: "unscramble"
+    question: "Gold"
+    answer: "Gold"
+    reward: 'random'
+  unscramble_mojang:
+    type: "unscramble"
+    question: "Mojang"
+    answer: "Mojang"
+    reward: 'random'
+  unscramble_minecraft:
+    type: "unscramble"
+    question: "Minecraft"
+    answer: "Minecraft"
+    reward: 'random'
+  solve_58_plus_342:
+    type: "solve"
+    question: "58+342"
+    answer: '400'
+    reward: 'random'
+  solve_76_plus_129:
+    type: "solve"
+    question: "76+129"
+    answer: '205'
+    reward: 'random'
+  solve_91_plus_507:
+    type: "solve"
+    question: "91+507"
+    answer: '598'
+    reward: 'random'
 
 #################################################################################################################################################
 ## Rewards

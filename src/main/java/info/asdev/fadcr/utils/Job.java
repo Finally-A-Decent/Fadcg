@@ -22,7 +22,7 @@ public abstract class Job {
 
     private final String name;
     private final Duration interval;
-    private boolean silent = false;
+    private boolean silent = true;
     private ScheduledFuture<?> future;
     @Getter private boolean active;
 
@@ -79,7 +79,9 @@ public abstract class Job {
 
     public final void shutdown() {
         active = false;
-        future.cancel(true);
+        if (future != null) {
+            future.cancel(true);
+        }
         log("[JOBS] Job '%s' shutdown!".formatted(this.name));
     }
 

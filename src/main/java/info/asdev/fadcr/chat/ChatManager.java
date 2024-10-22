@@ -80,13 +80,17 @@ public class ChatManager {
     }
 
     public void onPlayerLeave(PlayerQuitEvent event) {
-        if (Bukkit.getOnlinePlayers().size() < minPlayers && timeoutRunnable != null && running) {
-            timeout();
-            timeoutMessage = Text.getMessage("chat-reaction.reaction-cancelled-not-enough-players", false, active.getImplementation().getAnswer());
-            Bukkit.getOnlinePlayers().forEach(player -> {
-                Text.sendNoFetch(player, timeoutMessage);
-            });
-        }
+        new BukkitRunnable() {
+            @Override public void run() {
+                if (Bukkit.getOnlinePlayers().size() < minPlayers && timeoutRunnable != null && running) {
+                    timeout();
+                    timeoutMessage = Text.getMessage("chat-reaction.reaction-cancelled-not-enough-players", false, active.getImplementation().getAnswer());
+                    Bukkit.getOnlinePlayers().forEach(player -> {
+                        Text.sendNoFetch(player, timeoutMessage);
+                    });
+                }
+            }
+        }.runTaskLater(FADCR.getInstance(), 5L);
     }
 
     private void runJob() {
@@ -169,12 +173,12 @@ public class ChatManager {
         ConfigurationSection rewardSection = FADCR.getInstance().getConfig().getConfigurationSection("rewards");
         rewardSection = !"random".equalsIgnoreCase(reward) ? rewardSection.getConfigurationSection(reward) : rewardSection.getConfigurationSection(choiceSelector.next(random));
 
-        if (rewardSection != null) {
+        if (rewardSection != null && !rewardKeys.isEmpty()) {
             this.reward = Reward.builder().section(rewardSection).player(who).build();
             Bukkit.getScheduler().runTask(FADCR.getInstance(), this::giveReward);
-            Text.send(who, "rewards.won", rewardSection.getString("display_name"));
+            Text.send(who, "chat-reaction.reaction-won", rewardSection.getString("display_name"));
         } else {
-            Text.send(who, "rewards.no-reward");
+            Text.send(who, "chat-reaction.no-reward");
         }
     }
 
@@ -201,6 +205,9 @@ public class ChatManager {
         }
 
         running = false;
+        if (timeoutRunnable != null && !timeoutRunnable.isCancelled()) {
+            timeoutRunnable.cancel();
+        }
         active.reset();
         reward = null;
     }
