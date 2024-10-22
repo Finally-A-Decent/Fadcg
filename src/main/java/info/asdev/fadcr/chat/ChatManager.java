@@ -121,7 +121,7 @@ public class ChatManager {
             }
         };
 
-        timeoutRunnable.runTaskLater(FADCR.getInstance(), timeout / 20L);
+        timeoutRunnable.runTaskLater(FADCR.getInstance(), timeout / 50L);
         startTime = System.currentTimeMillis();
     }
 
@@ -158,6 +158,10 @@ public class ChatManager {
 
         running = false;
         awardPlayer(who);
+
+        if (timeoutRunnable != null && !timeoutRunnable.isCancelled()) {
+            timeoutRunnable.cancel();
+        }
 
         DecimalFormat format = new DecimalFormat(Text.getMessage("chat-reaction.time-format", false));
         String solved = Text.getMessage("chat-reaction.solved-by", false, who.getName(), format.format((double) (System.currentTimeMillis() - startTime) / 1000d));
