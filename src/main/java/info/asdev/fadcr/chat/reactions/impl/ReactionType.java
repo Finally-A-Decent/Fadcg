@@ -1,9 +1,13 @@
-package info.asdev.fadcr.chat.reactions;
+package info.asdev.fadcr.chat.reactions.impl;
 
+import info.asdev.fadcr.chat.reactions.Reaction;
+import info.asdev.fadcr.chat.reactions.ReactionImpl;
 import info.asdev.fadcr.utils.Text;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
@@ -13,8 +17,8 @@ public class ReactionType implements Reaction {
     private ReactionImpl implementation;
 
     @Override public void init() {
-        ReactionImpl[] reactions = getReactions();
-        implementation = reactions.length == 1 ? reactions[0] : reactions[getChatManager().getRandom().nextInt(reactions.length)];
+        List<ReactionImpl> reactions = getReactions();
+        implementation = reactions.size() == 1 ? reactions.getFirst(): reactions.get(getRandom().nextInt(reactions.size()));
         answer = implementation.getAnswer();
     }
 

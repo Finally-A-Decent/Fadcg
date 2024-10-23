@@ -1,12 +1,14 @@
-package info.asdev.fadcr.chat.reactions;
+package info.asdev.fadcr.chat.reactions.impl;
 
+import info.asdev.fadcr.chat.reactions.Reaction;
+import info.asdev.fadcr.chat.reactions.ReactionImpl;
 import info.asdev.fadcr.utils.Text;
 import info.asdev.fadcr.utils.Util;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 
-import java.util.Random;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class ReactionUnscramble implements Reaction {
@@ -16,10 +18,9 @@ public class ReactionUnscramble implements Reaction {
     private String question;
 
     @Override public void init() {
-        Random random = getChatManager().getRandom();
-        ReactionImpl[] impls = getChatManager().getReactionsById(id);
+        List<ReactionImpl> implementations = getReactions();
 
-        implementation = impls.length == 1 ? impls[0] : impls[random.nextInt(impls.length)];
+        implementation = implementations.size() == 1 ? implementations.getFirst() : implementations.get(getRandom().nextInt(implementations.size()));
         answer = implementation.getAnswer();
         question = Util.scramble(answer);
     }

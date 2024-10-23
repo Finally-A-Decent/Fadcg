@@ -1,0 +1,24 @@
+type_monster:
+  question: "Monster"
+  answer: "Monster"
+  reward: 'random'
+type_crying_cbsidian:
+  question: "Crying Obsidian"
+  answer: "Crying Obsidian"
+  reward: "random"
+type_cbsidian:
+  question: "Obsidian"
+  answer: "Obsidian"
+  reward: 'random'
+type_lapis_lazuli:
+  question: "Lapis Lazuli"
+  answer: "Lapis Lazuli"
+  reward: 'random'
+type_wheat:
+  question: "Wheat"
+  answer: "Wheat"
+  reward: 'random'
+type_Axolotl:
+  question: "Axolotl"
+  answer: "Axolotl"
+  reward: 'random'

@@ -2,6 +2,7 @@ package info.asdev.fadcr.chat;
 
 import info.asdev.fadcr.FADCR;
 import info.asdev.fadcr.chat.reactions.*;
+import info.asdev.fadcr.config.ReactionConfigManager;
 import info.asdev.fadcr.utils.Job;
 import info.asdev.fadcr.utils.RandomSelector;
 import info.asdev.fadcr.utils.Text;
@@ -35,7 +36,6 @@ public class ChatManager {
     private Job job;
     private BukkitRunnable timeoutRunnable;
     private Map<String, Reaction> registeredReactions = new HashMap<>();
-    private List<ReactionImpl> loadedReactionImplementations = new ArrayList<>();
     private Set<String> rewardKeys;
     private Reward reward;
     private long timeout = 60_000, interval = 300_000;
@@ -44,59 +44,49 @@ public class ChatManager {
     private int minPlayers = 2;
 
     public void init() {
+        shutdown();
+
         FileConfiguration config = FADCR.getInstance().getConfig();
-        ConfigurationSection reactionsSection = config.getConfigurationSection("reactions");
-        Set<String> reactionKeys = reactionsSection.getKeys(false);
-        rewardKeys = config.getConfigurationSection("rewards").getKeys(false);
-
-        for (String key : reactionKeys) {
-            ConfigurationSection section = reactionsSection.getConfigurationSection(key);
-
-            String type = section.getString("type");
-            String answer = section.getString("answer");
-            String question = section.getString("question");
-            String reward = section.getString("reward");
-
-            loadedReactionImplementations.add(new ReactionImpl("reactions." + key, type, answer, question, reward));
-        }
+        rewardKeys = ReactionConfigManager.getRewardsConfig().getConfig().getKeys(false);
 
         caseSensitiveAnswers = config.getBoolean("options.case-sensitive-answers", true);
         centerFormat = FADCR.getLang().getBoolean("chat-reaction.center-reaction-format", false);
-        choiceSelector = RandomSelector.weighted(rewardKeys, (key) -> FADCR.getInstance().getConfig().getDouble("rewards." + key + ".chance", 1d));
+        choiceSelector = RandomSelector.weighted(rewardKeys, (key) -> ReactionConfigManager.getRewardsConfig().getConfig().getDouble(key + ".chance", 1d));
 
         interval = config.getLong("options.interval", 300_000);
         timeout = config.getLong("options.timeout", 60_000);
         minPlayers = config.getInt("options.min-players", 2);
-
-
-
-        if (getReactionsById("unscramble").length > 0) registerReaction(new ReactionUnscramble("unscramble", "Unscramble"));
-        if (getReactionsById("type").length > 0) registerReaction(new ReactionType("type", "Type"));
-        if (getReactionsById("solve").length > 0) registerReaction(new ReactionSolve("solve", "Solve"));
-        //if (getReactionsById("solve_dynamic").length > 0) registerReaction(new ReactionSolveDynamic("solve_dynamic", "Solve")); // EXPERIMENTAL
 
         job = Job.of("chatreactions_run", this::runJob, Duration.of(interval, ChronoUnit.MILLIS));
         job.start();
     }
 
     public void shutdown() {
+        if (running) {
+            timeout();
+        }
         if (job != null) {
             job.shutdown();
         }
     }
 
+    public void runNow() {
+        runJob();
+    }
+
     public void onPlayerLeave(PlayerQuitEvent event) {
-        new BukkitRunnable() {
-            @Override public void run() {
-                if (Bukkit.getOnlinePlayers().size() < minPlayers && timeoutRunnable != null && running) {
-                    timeout();
-                    timeoutMessage = Text.getMessage("chat-reaction.reaction-cancelled-not-enough-players", false, active.getImplementation().getAnswer());
-                    Bukkit.getOnlinePlayers().forEach(player -> {
-                        Text.sendNoFetch(player, timeoutMessage);
-                    });
-                }
-            }
-        }.runTaskLater(FADCR.getInstance(), 5L);
+        int count = Util.getOnlineSizeExcluding(event.getPlayer());
+        if (count >= minPlayers) {
+            return;
+        }
+
+        if (timeoutRunnable != null && running) {
+            timeout();
+            timeoutMessage = Text.getMessage("chat-reaction.reaction-cancelled-not-enough-players", false, active.getImplementation().getAnswer());
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                Text.sendNoFetch(player, timeoutMessage);
+            });
+        }
     }
 
     private void runJob() {
@@ -105,7 +95,7 @@ public class ChatManager {
         }
 
         running = true;
-        active = activateRandomReaction();
+        active = ReactionConfigManager.random();
         active.init();
 
         String message = Text.getMessage("chat-reaction.format", true, active.getMessage());
@@ -129,24 +119,6 @@ public class ChatManager {
 
         timeoutRunnable.runTaskLater(FADCR.getInstance(), timeout / 50L);
         startTime = System.currentTimeMillis();
-    }
-
-    public boolean registerReaction(Reaction reaction) {
-        if (registeredReactions.containsKey(reaction.getId())) {
-            return false;
-        }
-
-        return registeredReactions.putIfAbsent(reaction.getId(), reaction) != null;
-    }
-
-    public Reaction activateRandomReaction() {
-        Reaction[] reactions = registeredReactions.values().toArray(new Reaction[0]);
-        return active = reactions[random.nextInt(reactions.length)];
-    }
-
-    public ReactionImpl[] getReactionsById(String id) {
-        List<ReactionImpl> all = loadedReactionImplementations.stream().filter(impl -> impl.getType().equals(id)).toList();
-        return all.toArray(new ReactionImpl[0]);
     }
 
     public void processChatMessage(Player who, String message) {
@@ -180,7 +152,7 @@ public class ChatManager {
         ReactionImpl activeImpl = active.getImplementation();
         String reward = activeImpl.getReward();
 
-        ConfigurationSection rewardSection = FADCR.getInstance().getConfig().getConfigurationSection("rewards");
+        ConfigurationSection rewardSection = ReactionConfigManager.getRewardsConfig().getConfig();
         rewardSection = !"random".equalsIgnoreCase(reward) ? rewardSection.getConfigurationSection(reward) : rewardSection.getConfigurationSection(choiceSelector.next(random));
 
         if (rewardSection != null && !rewardKeys.isEmpty()) {
@@ -203,7 +175,7 @@ public class ChatManager {
                     .replace("{uuid}", who.getUniqueId().toString());
             try {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), parsed);
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 FADCR.getInstance().getLogger().log(Level.WARNING, "Reward command execution failed for command: " + parsed, ex);
             }
         }
@@ -219,7 +191,6 @@ public class ChatManager {
             timeoutRunnable.cancel();
         }
         active.reset();
-        reward = null;
     }
 
     public static ChatManager getInstance() {

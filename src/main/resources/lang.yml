@@ -25,7 +25,16 @@ chat-reaction:
 # When setting these, make sure you include {0}, as this is the actual question contents.
 # For instance, in a solve reaction, it'd become the equation they need to work out (100 + 50, for example)
 reactions:
-    unscramble: "Unscramble the following word(s) for a prize: &c{0}"
-    type: "Type the following word(s) for a prize: &c{0}"
-    solve: "Solve the following math equation for a reward: &c{0}"
-    solve_dynamic: "Solve this math equation to &c{1}dp&r: &c{0}"
+    unscramble: "Unscramble the following word/phrase: &c{0}"
+    type: "Type the following word/phrase: &c{0}"
+    solve: "Solve the following math equation: &c{0}"
+    reverse: "Reverse the following word/phrase: &c{0}"
+    finish_phrase: "Finish the phrase: &c{0}"
+
+commands:
+  errors:
+    no-permission: "&cInsufficient Permission"
+    unknown-args: "&cUnknown command args"
+    requirements-not-met: "&cUnable to run a chat reaction early: Minimum requirements not met."
+  reload:
+      success: "&aEverything should have reloaded."

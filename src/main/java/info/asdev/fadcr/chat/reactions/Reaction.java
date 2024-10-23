@@ -2,8 +2,12 @@ package info.asdev.fadcr.chat.reactions;
 
 import info.asdev.fadcr.FADCR;
 import info.asdev.fadcr.chat.ChatManager;
+import info.asdev.fadcr.config.ReactionConfigManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+
+import java.util.List;
+import java.util.Random;
 
 public interface Reaction {
     void init();
@@ -26,7 +30,10 @@ public interface Reaction {
     default ChatManager getChatManager() {
         return ChatManager.getInstance();
     }
-    default ReactionImpl[] getReactions() {
-        return getChatManager().getReactionsById(getId());
+    default List<ReactionImpl> getReactions() {
+        return ReactionConfigManager.getReactionImplementationsById(getId());
+    }
+    default Random getRandom() {
+        return getChatManager().getRandom();
     }
 }

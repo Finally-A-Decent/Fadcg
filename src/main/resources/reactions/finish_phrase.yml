@@ -1,0 +1,16 @@
+mining_diamonds:
+  question: "Welcome to my ____!"
+  answer: "mine"
+  reward: "random"
+take_back_the_night:
+  question: "Take back the _____!"
+  answer: "night"
+  reward: "random"
+creeper_aw_man:
+  question: "Creeper! Aw ___!"
+  answer: "man"
+  reward: "random"
+the_creepers_came:
+  question: "And then the freakin' ________ came!"
+  answer: "creepers"
+  reward: "random"

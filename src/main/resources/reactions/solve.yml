@@ -1,0 +1,60 @@
+solve_two_pow_8:
+  question: "2⁸"
+  answer: '256'
+  reward: 'random'
+threefourfivesix:
+  question: "34+56"
+  answer: '90'
+  reward: 'random'
+seventwoeightnine:
+  question: "72+89"
+  answer: '161'
+  reward: 'random'
+fourfiveseveneight:
+  question: "45+78"
+  answer: '123'
+  reward: 'random'
+sixsixeightseven:
+  question: "66+87"
+  answer: '153'
+  reward: 'random'
+nineonefiveeight:
+  question: "91+58"
+  answer: '149'
+  reward: 'random'
+fivetimestwenty:
+  question: "5*21"
+  answer: '105'
+  reward: 'random'
+ninetimesnine:
+  question: "9*9"
+  answer: '81'
+  reward: 'random'
+sixtysix_times_eleven:
+  question: "66*11"
+  answer: '726'
+  reward: 'random'
+ninetyoneminustwenty:
+  question: "91-20"
+  answer: '71'
+  reward: 'random'
+seventyminusninetyeight:
+  question: "70-98"
+  answer: '-28'
+  reward: 'random'
+onehundredandtwentythree_minus_seventyeight:
+  question: "123-78"
+  answer: '45'
+  reward: 'random'
+58_plus_342:
+  question: "58+342"
+  answer: '400'
+  reward: 'random'
+76_plus_129:
+  question: "76+129"
+  answer: '205'
+  reward: 'random'
+91_plus_507:
+  question: "91+507"
+  answer: '598'
+  reward: 'random'

@@ -1,6 +1,8 @@
 package info.asdev.fadcr;
 
 import info.asdev.fadcr.chat.ChatManager;
+import info.asdev.fadcr.commands.CommandFADCG;
+import info.asdev.fadcr.config.ReactionConfigManager;
 import info.asdev.fadcr.gui.GuiManager;
 import info.asdev.fadcr.listeners.ChatListener;
 import info.asdev.fadcr.utils.Text;
@@ -27,8 +29,12 @@ public final class FADCR extends JavaPlugin {
         saveDefaultConfig();
 
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
+
+        ReactionConfigManager.init();
         ChatManager.getInstance().init();
         GuiManager.getInstance().init();
+
+        getCommand("fadcg").setExecutor(new CommandFADCG());
 
         papiInstalled = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
         Bukkit.getConsoleSender().sendMessage(Text.legacyMessage("""

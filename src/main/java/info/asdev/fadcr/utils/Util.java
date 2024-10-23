@@ -1,8 +1,12 @@
 package info.asdev.fadcr.utils;
 
+import com.google.common.collect.Lists;
 import lombok.experimental.UtilityClass;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.awt.image.BufferedImageOp;
+import java.util.List;
 import java.util.Random;
 
 @UtilityClass
@@ -88,6 +92,29 @@ public class Util {
             compensated += spaceLength;
         }
         return sb.toString() + message;
+    }
+
+    public int getOnlineSizeExcluding(Player... players) {
+        if (players.length < 1) {
+            return Bukkit.getOnlinePlayers().size();
+        }
+
+        List<Player> players2 = Lists.newArrayList(players);
+        return (int) Bukkit.getOnlinePlayers().stream().filter(player -> !players2.contains(player)).count();
+    }
+
+    public String reverse(String reverse) {
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = reverse.length(); i > 0; i--) {
+            builder.append(
+                    reverse.charAt(
+                            Math.max(0, i - 1)
+                    )
+            );
+        }
+
+        return builder.toString();
     }
 
 }

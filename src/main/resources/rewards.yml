@@ -1,0 +1,20 @@
+one_diamond:
+  display_name: "One Diamond"
+  chance: 10.5
+  commands:
+    - 'give {player} diamond 1'
+eight_oak_logs:
+  display_name: "8 Oak Logs"
+  chance: 30
+  commands:
+    - 'give {player} oak_log 8'
+two_netherite_ingots:
+  display_name: "2 Netherite Ingots"
+  chance: 0.5
+  commands:
+    - 'give {player} netherite_ingot 2'
+twenty_xp:
+  display_name: "20 XP"
+  chance: 59
+  commands:
+    - 'minecraft:xp add {player} 20'

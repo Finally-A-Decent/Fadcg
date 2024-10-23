@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -136,8 +137,8 @@ public final class Text {
         return legacyList;
     }
 
-    // FADCR specific
-    public void send(Player player, String key, Object... replacements) {
+    // FADCG specific
+    public void send(CommandSender sender, String key, Object... replacements) {
         FileConfiguration lang = FADCR.getLang();
         String message = lang.getString(key);
 
@@ -145,7 +146,7 @@ public final class Text {
             FADCR.getInstance().getLogger().warning("Message key " + key + " is null. Cannot send.");
             return;
         }
-        if (FADCR.papi()) {
+        if (FADCR.papi() && sender instanceof  Player player) {
             message = TextPapi.setPlaceholders(player, message);
         }
 
@@ -157,16 +158,16 @@ public final class Text {
             message = message.replace("{" + i + "}", String.valueOf(replacements[i]));
         }
 
-        player.sendMessage(legacyMessage(message));
+        sender.sendMessage(legacyMessage(message));
     }
 
-    public void sendNoFetch(Player player, String message, Object... replacements) {
+    public void sendNoFetch(CommandSender sender, String message, Object... replacements) {
         if (message == null) {
             FADCR.getInstance().getLogger().warning("Message is null. Cannot send.");
             return;
         }
 
-        if (FADCR.papi()) {
+        if (FADCR.papi() && sender instanceof Player player) {
             message = TextPapi.setPlaceholders(player, message);
         }
 
@@ -178,7 +179,7 @@ public final class Text {
             message = message.replace("{" + i + "}", String.valueOf(replacements[i]));
         }
 
-        player.sendMessage(legacyMessage(message));
+        sender.sendMessage(legacyMessage(message));
     }
 
     public String getMessage(String key, boolean list, Object... replacements) {

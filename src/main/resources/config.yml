@@ -1,3 +1,24 @@
+######################################################
+###                                                ###
+###     _____      _      ____     ____     ____   ###
+###    |  ___|    / \    |  _ \   / ___|  / ___|   ###
+###    | |_      / □ \   | | | | | |     | |  _    ###
+###    |  _|    / ___ \  | |_| | | |___  | |_| |   ###
+###    |_|     /_/   \_\ |____/   \____| \____|    ###
+###                                                ###
+######################################################
+
+##################################################################################################################################################
+## Reactions                                                                                                                                    ##
+## If you want to suggest a chat reaction type, or need to ask for help, you can do so in our Discord: https://discord.gg/GGCk3zdgQP            ##
+## Valid Types (as of 1.0): [UNSCRAMBLE, TYPE, SOLVE, REVERSE, FINISH_PHRASE]                                                                   ##
+##                                                                                                                                              ##
+## Rewards                                                                                                                                      ##
+## These are the possible rewards a player can get for winning a chat reaction                                                                  ##
+## If you want to randomly set what reward the player gets (which then uses the chance value), set the 'reward' key in the reaction to 'random' ##
+## Otherwise, set it to the key of the reward, for example 'one_diamond' or 'eight_oak_logs'                                                    ##
+##################################################################################################################################################
+
 # Changes to this value could result in the plugin not loading or your config being corrupted.
 version: 1.0
 
@@ -6,169 +27,5 @@ options:
   interval: 300000
   timeout: 60000
   min-players: 2
-  disabled-reaction-types: []
+  disabled-chat-reactions: []
 
-#######################################################################################################################################
-## Reactions
-## If you want to suggest a chat reaction type, or need to ask for help, you can do so in our Discord: https://discord.gg/GGCk3zdgQP
-##
-## For Unscramble and Type reactions, the answer is used as the question.
-## The only difference is that `unscramble` answers are automatically scrambled before being sent in chat.
-## For instance, 'Enderman' would become along the lines of 'mnaEdnre', however it won't always be exactly that.
-##
-## Valid Types (as of 1.0): [UNSCRAMBLE, TYPE, SOLVE]
-#######################################################################################################################################
-reactions:
-  solve_two_pow_8:
-    type: "solve"
-    question: "2⁸"
-    answer: '256'
-    reward: 'random'
-  threefourfivesix:
-    type: "solve"
-    question: "34+56"
-    answer: '90'
-    reward: 'random'
-  seventwoeightnine:
-    type: "solve"
-    question: "72+89"
-    answer: '161'
-    reward: 'random'
-  fourfiveseveneight:
-    type: "solve"
-    question: "45+78"
-    answer: '123'
-    reward: 'random'
-  sixsixeightseven:
-    type: "solve"
-    question: "66+87"
-    answer: '153'
-    reward: 'random'
-  nineonefiveeight:
-    type: "solve"
-    question: "91+58"
-    answer: '149'
-    reward: 'random'
-  type_monster:
-    type: "type"
-    question: "Monster"
-    answer: "Monster"
-    reward: 'random'
-  unscramble_enderman:
-    type: "unscramble"
-    question: "Enderman"
-    answer: "Enderman"
-    reward: 'random'
-  unscramble_blue:
-    type: "unscramble"
-    question: "Blue"
-    answer: "Blue"
-    reward: 'random'
-  unscramble_endermite:
-    type: "unscramble"
-    question: "Endermite"
-    answer: "Endermite"
-    reward: 'random'
-  unscramble_blaze:
-    type: "unscramble"
-    question: "Blaze"
-    answer: "Blaze"
-    reward: 'random'
-  unscramble_dragon:
-    type: "unscramble"
-    question: "Dragon"
-    answer: "Dragon"
-    reward: 'random'
-  unscramble_amethyst:
-    type: "unscramble"
-    question: "Amethyst"
-    answer: "Amethyst"
-    reward: 'random'
-  unscramble_diamond:
-    type: "unscramble"
-    question: "Diamond"
-    answer: "Diamond"
-    reward: 'random'
-  unscramble_iron:
-    type: "unscramble"
-    question: "Iron"
-    answer: "Iron"
-    reward: 'random'
-  unscramble_Cactus:
-    type: "unscramble"
-    question: "Cactus"
-    answer: "Cactus"
-    reward: 'random'
-  unscramble_flower:
-    type: "unscramble"
-    question: "Flower"
-    answer: "Flower"
-    reward: 'random'
-  type_wheat:
-    type: "type"
-    question: "Wheat"
-    answer: "Wheat"
-    reward: 'random'
-  type_Axolotl:
-    type: "type"
-    question: "Axolotl"
-    answer: "Axolotl"
-    reward: 'random'
-  unscramble_gold:
-    type: "unscramble"
-    question: "Gold"
-    answer: "Gold"
-    reward: 'random'
-  unscramble_mojang:
-    type: "unscramble"
-    question: "Mojang"
-    answer: "Mojang"
-    reward: 'random'
-  unscramble_skibidi:
-    type: "unscramble"
-    question: "Skibidi Toilet"
-    answer: "Skibidi Toilet"
-    reward: 'random'
-  unscramble_minecraft:
-    type: "unscramble"
-    question: "Minecraft"
-    answer: "Minecraft"
-    reward: 'random'
-  solve_58_plus_342:
-    type: "solve"
-    question: "58+342"
-    answer: '400'
-    reward: 'random'
-  solve_76_plus_129:
-    type: "solve"
-    question: "76+129"
-    answer: '205'
-    reward: 'random'
-  solve_91_plus_507:
-    type: "solve"
-    question: "91+507"
-    answer: '598'
-    reward: 'random'
-
-#################################################################################################################################################
-## Rewards
-## These are the possible rewards a player can get for winning a chat reaction
-## If you want to randomly set what reward the player gets (which then uses the chance value), set the 'reward' key in the reaction to 'random'
-## Otherwise, set it to the key of the reward, for example 'one_diamond' or 'eight_oak_logs'
-#################################################################################################################################################
-rewards:
-  one_diamond:
-    display_name: "One Diamond"
-    chance: 10.5
-    commands:
-      - 'give {player} diamond 1'
-  eight_oak_logs:
-    display_name: "8 Oak Logs"
-    chance: 30.5
-    commands:
-      - 'give {player} oak_log 8'
-  twenty_xp:
-    display_name: "20 XP"
-    chance: 59
-    commands:
-      - 'minecraft:xp add {player} 20'

@@ -1,15 +1,20 @@
-package info.asdev.fadcr.chat.reactions;
+package info.asdev.fadcr.chat.reactions.impl;
 
+import info.asdev.fadcr.chat.reactions.Reaction;
+import info.asdev.fadcr.chat.reactions.ReactionImpl;
+import info.asdev.fadcr.config.ReactionConfigManager;
 import info.asdev.fadcr.utils.Text;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.text.DecimalFormat;
 import java.util.Random;
 
 @RequiredArgsConstructor
+@ApiStatus.Experimental
 public class ReactionSolveDynamic implements Reaction {
 
     @Getter private final String id, displayName;
@@ -27,7 +32,7 @@ public class ReactionSolveDynamic implements Reaction {
     };
 
     @Override public void init() {
-        implementation = getChatManager().getReactionsById(getId())[0];
+        implementation = ReactionConfigManager.getReactionImplementationsById(getId()).getFirst();
         ConfigurationSection section = implementation.getSectionFromPath();
         digits = section.getInt("digits", 2);
         decimalPlaces = section.getInt("decimal-places", 2);
@@ -39,7 +44,7 @@ public class ReactionSolveDynamic implements Reaction {
             decimalPlaces = 2;
         }
 
-        Random random = getChatManager().getRandom();
+        Random random = getRandom();
         char symbol = symbols[random.nextInt(symbols.length)];
         DecimalFormat format = new DecimalFormat("0." + "#".repeat(Math.max(1, decimalPlaces)));
 

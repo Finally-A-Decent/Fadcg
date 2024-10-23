@@ -1,0 +1,64 @@
+unscramble_gold:
+  question: "Gold"
+  answer: "Gold"
+  reward: 'random'
+unscramble_mojang:
+  question: "Mojang"
+  answer: "Mojang"
+  reward: 'random'
+unscramble_minecraft:
+  question: "Minecraft"
+  answer: "Minecraft"
+  reward: 'random'
+unscramble_iron:
+  question: "Iron"
+  answer: "Iron"
+  reward: 'random'
+unscramble_Cactus:
+  question: "Cactus"
+  answer: "Cactus"
+  reward: 'random'
+unscramble_flower:
+  question: "Flower"
+  answer: "Flower"
+  reward: 'random'
+unscramble_lapis_lazuli:
+  question: "Lapis Lazuli"
+  answer: "Lapis Lazuli"
+  reward: 'random'
+unscramble_blaze:
+  question: "Blaze"
+  answer: "Blaze"
+  reward: 'random'
+unscramble_dragon:
+  question: "Dragon"
+  answer: "Dragon"
+  reward: 'random'
+unscramble_amethyst:
+  question: "Amethyst"
+  answer: "Amethyst"
+  reward: 'random'
+unscramble_diamond:
+  question: "Diamond"
+  answer: "Diamond"
+  reward: 'random'
+unscramble_enderman:
+  question: "Enderman"
+  answer: "Enderman"
+  reward: 'random'
+unscramble_blue:
+  question: "Blue"
+  answer: "Blue"
+  reward: 'random'
+unscramble_endermite:
+  question: "Endermite"
+  answer: "Endermite"
+  reward: 'random'
+unscramble_crying_cbsidian:
+  question: "Crying Obsidian"
+  answer: "Crying Obsidian"
+  reward: "random"
+unscramble_cbsidian:
+  question: "Obsidian"
+  answer: "Obsidian"
+  reward: 'random'

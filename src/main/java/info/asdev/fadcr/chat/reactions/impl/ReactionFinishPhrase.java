@@ -1,5 +1,7 @@
-package info.asdev.fadcr.chat.reactions;
+package info.asdev.fadcr.chat.reactions.impl;
 
+import info.asdev.fadcr.chat.reactions.Reaction;
+import info.asdev.fadcr.chat.reactions.ReactionImpl;
 import info.asdev.fadcr.utils.Text;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,12 +11,14 @@ import org.bukkit.entity.Player;
 @RequiredArgsConstructor
 public class ReactionFinishPhrase implements Reaction {
     private final String id, displayName;
-
     private String question;
     private String answer;
     private ReactionImpl implementation;
 
     @Override public void init() {
+        implementation = getReactions().size() == 1 ? getReactions().getFirst() : getReactions().get(getRandom().nextInt(getReactions().size()));
+        question = implementation.getQuestion();
+        answer = implementation.getAnswer();
     }
 
     @Override public boolean attempt(Player who, String message) {
@@ -22,7 +26,8 @@ public class ReactionFinishPhrase implements Reaction {
     }
 
     @Override public void reset() {
-
+        question = null;
+        answer = null;
     }
 
     @Override public String getMessage() {
