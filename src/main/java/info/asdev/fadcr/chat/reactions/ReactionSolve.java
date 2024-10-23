@@ -1,6 +1,5 @@
 package info.asdev.fadcr.chat.reactions;
 
-import info.asdev.fadcr.utils.Util;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
@@ -12,7 +11,7 @@ public class ReactionSolve implements Reaction {
     @Getter private final String id, displayName;
     @Getter private ReactionImpl implementation;
     private String question;
-    private String answer;
+    @Getter private String answer;
 
     @Override public boolean attempt(Player who, String message) {
         return answer.equalsIgnoreCase(message);

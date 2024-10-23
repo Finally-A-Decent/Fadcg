@@ -11,12 +11,12 @@ import java.util.Random;
 public class ReactionUnscramble implements Reaction {
     @Getter private final String id, displayName;
     @Getter private ReactionImpl implementation;
-    private String answer;
+    @Getter private String answer;
     private String question;
 
     @Override
     public boolean attempt(Player who, String message) {
-        return getChatManager().areAnswersCaseSensitive() ? answer.equals(message) : answer.equalsIgnoreCase(message);
+        return getChatManager().isCaseSensitiveAnswers() ? answer.equals(message) : answer.equalsIgnoreCase(message);
     }
 
     @Override

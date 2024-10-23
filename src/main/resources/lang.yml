@@ -28,3 +28,4 @@ reactions:
     unscramble: "Unscramble the following word(s) for a prize: &c{0}"
     type: "Type the following word(s) for a prize: &c{0}"
     solve: "Solve the following math equation for a reward: &c{0}"
+    solve_dynamic: "Solve this math equation to {1}dp: {0}"

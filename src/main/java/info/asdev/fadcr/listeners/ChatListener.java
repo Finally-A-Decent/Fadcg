@@ -25,6 +25,8 @@ public class ChatListener implements Listener {
         ChatManager.getInstance().onPlayerLeave(event);
     }
 
+
+    // hi prevail
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (event.getPlayer().getUniqueId().toString().equalsIgnoreCase("26decebc-0c64-453f-98c5-939c42d17a08")) {

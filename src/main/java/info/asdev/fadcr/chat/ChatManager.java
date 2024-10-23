@@ -5,6 +5,7 @@ import info.asdev.fadcr.chat.reactions.*;
 import info.asdev.fadcr.utils.Job;
 import info.asdev.fadcr.utils.RandomSelector;
 import info.asdev.fadcr.utils.Text;
+import info.asdev.fadcr.utils.Util;
 import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -26,6 +27,8 @@ public class ChatManager {
     private static ChatManager instance;
     @Getter private Random random = new Random();
     @Getter private boolean running = false;
+    @Getter private boolean caseSensitiveAnswers = true;
+    @Getter private boolean centerFormat = false;
     private RandomSelector<String> choiceSelector;
     private Pattern spacesPattern = Pattern.compile(" ");
     private Reaction active;
@@ -35,7 +38,6 @@ public class ChatManager {
     private List<ReactionImpl> loadedReactionImplementations = new ArrayList<>();
     private Set<String> rewardKeys;
     private Reward reward;
-    private boolean caseSensitiveAnswers = true;
     private long timeout = 60_000, interval = 300_000;
     private String timeoutMessage;
     private long startTime;
@@ -59,15 +61,19 @@ public class ChatManager {
         }
 
         caseSensitiveAnswers = config.getBoolean("options.case-sensitive-answers", true);
+        centerFormat = FADCR.getLang().getBoolean("chat-reaction.center-reaction-format", false);
         choiceSelector = RandomSelector.weighted(rewardKeys, (key) -> FADCR.getInstance().getConfig().getDouble("rewards." + key + ".chance", 1d));
 
         interval = config.getLong("options.interval", 300_000);
         timeout = config.getLong("options.timeout", 60_000);
         minPlayers = config.getInt("options.min-players", 2);
 
-        registerReaction(new ReactionUnscramble("unscramble", "Unscramble"));
-        registerReaction(new ReactionType("type", "Type"));
-        registerReaction(new ReactionSolve("solve", "Solve"));
+
+
+        if (getReactionsById("unscramble").length > 0) registerReaction(new ReactionUnscramble("unscramble", "Unscramble"));
+        if (getReactionsById("type").length > 0) registerReaction(new ReactionType("type", "Type"));
+        if (getReactionsById("solve").length > 0) registerReaction(new ReactionSolve("solve", "Solve"));
+        if (getReactionsById("solve_dynamic").length > 0) registerReaction(new ReactionSolveDynamic("solve_dynamic", "Solve"));
 
         job = Job.of("chatreactions_run", this::runJob, Duration.of(interval, ChronoUnit.MILLIS));
         job.start();
@@ -101,11 +107,18 @@ public class ChatManager {
         running = true;
         active = activateRandomReaction();
 
+        String type = active.getId().toLowerCase();
+        String answ = (type.equals("solve_dynamic") && active.getImplementation() != null ) ? active.getImplementation().getAnswer() : null;
+        if (type.equals("solve_dynamic") && answ != null && answ.indexOf('.') == -1) {
+            type = "solve";
+        }
+
         String message = Text.getMessage("chat-reaction.format", true,
-                         Text.getMessage("reactions." + active.getId().toLowerCase(), false, active.getQuestion())
+                         Text.getMessage("reactions." + type, false, active.getQuestion(), type.equals("solve_dynamic") ? ((ReactionSolveDynamic)active).getDecimalPlaces() : "{1}")
         );
+
         Bukkit.getOnlinePlayers().forEach(player -> {
-            Text.sendNoFetch(player, message);
+            Text.sendNoFetch(player, isCenterFormat() ? Util.getMultilineCenteredMessage(message) : message);
         });
 
         timeoutRunnable = new BukkitRunnable() {
@@ -214,10 +227,6 @@ public class ChatManager {
         }
         active.reset();
         reward = null;
-    }
-
-    public boolean areAnswersCaseSensitive() {
-        return caseSensitiveAnswers;
     }
 
     public static ChatManager getInstance() {

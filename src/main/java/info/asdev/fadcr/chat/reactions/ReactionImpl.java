@@ -3,6 +3,7 @@ package info.asdev.fadcr.chat.reactions;
 import info.asdev.fadcr.FADCR;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 
 @AllArgsConstructor
@@ -10,7 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 public class ReactionImpl {
     private String path;
     private String type;
-    private String answer;
+    @Setter  private String answer;
     private String question;
     private String reward;
 

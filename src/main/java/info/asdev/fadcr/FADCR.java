@@ -15,9 +15,9 @@ import java.io.InputStreamReader;
 
 public final class FADCR extends JavaPlugin {
     public static final double MIN_CONFIG_VERSION = 1d;
+    private static boolean papiInstalled = false;
 
     @Getter private static FADCR instance;
-    private static boolean papiInstalled = false;
     @Getter private static FileConfiguration lang;
     @Getter private File langFile;
 
@@ -53,6 +53,12 @@ public final class FADCR extends JavaPlugin {
 
         lang = YamlConfiguration.loadConfiguration(langFile);
         lang.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(getResource(langFile.getName()))));
+    }
+
+    @Override
+    public void saveDefaultConfig() {
+        super.saveDefaultConfig();
+        loadLanguageFile();
     }
 
     @Override

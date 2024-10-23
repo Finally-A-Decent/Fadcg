@@ -11,7 +11,7 @@ public class ReactionType implements Reaction {
     @Getter private ReactionImpl implementation;
 
     @Override public boolean attempt(Player who, String message) {
-        return getChatManager().areAnswersCaseSensitive() ? answer.equals(message) : answer.equalsIgnoreCase(message);
+        return getChatManager().isCaseSensitiveAnswers() ? answer.equals(message) : answer.equalsIgnoreCase(message);
     }
 
     @Override public String getQuestion() {

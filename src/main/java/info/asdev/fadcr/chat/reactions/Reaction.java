@@ -12,6 +12,8 @@ public interface Reaction {
 
     ReactionImpl getImplementation();
     String getQuestion();
+    String getAnswer();
+
     void reset();
 
     default FADCR getPlugin() {
