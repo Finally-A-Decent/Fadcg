@@ -11,9 +11,9 @@ import org.bukkit.configuration.ConfigurationSection;
 public class ReactionImpl {
     private String path;
     private String type;
-    @Setter  private String answer;
     private String question;
     private String reward;
+    @Setter private String answer;
 
     public ConfigurationSection getSectionFromPath() {
         return FADCR.getInstance().getConfig().getConfigurationSection(path);

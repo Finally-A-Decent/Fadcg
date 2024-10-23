@@ -182,7 +182,7 @@ public final class Text {
     }
 
     public String getMessage(String key, boolean list, Object... replacements) {
-        String message = list ? String.join("\n", FADCR.getLang().getStringList(key)) : FADCR.getLang().getString(key, "");
+        String message = list ? String.join("\n", FADCR.getLang().getStringList(key)) : FADCR.getLang().getString(key, "null");
         for (int i = 0; i < replacements.length; i++) {
             if (!message.contains("{" + i + "}")) {
                 continue;

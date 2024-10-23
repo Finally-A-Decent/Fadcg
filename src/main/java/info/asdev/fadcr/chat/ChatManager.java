@@ -73,7 +73,7 @@ public class ChatManager {
         if (getReactionsById("unscramble").length > 0) registerReaction(new ReactionUnscramble("unscramble", "Unscramble"));
         if (getReactionsById("type").length > 0) registerReaction(new ReactionType("type", "Type"));
         if (getReactionsById("solve").length > 0) registerReaction(new ReactionSolve("solve", "Solve"));
-        if (getReactionsById("solve_dynamic").length > 0) registerReaction(new ReactionSolveDynamic("solve_dynamic", "Solve"));
+        //if (getReactionsById("solve_dynamic").length > 0) registerReaction(new ReactionSolveDynamic("solve_dynamic", "Solve")); // EXPERIMENTAL
 
         job = Job.of("chatreactions_run", this::runJob, Duration.of(interval, ChronoUnit.MILLIS));
         job.start();
@@ -106,16 +106,9 @@ public class ChatManager {
 
         running = true;
         active = activateRandomReaction();
+        active.init();
 
-        String type = active.getId().toLowerCase();
-        String answ = (type.equals("solve_dynamic") && active.getImplementation() != null ) ? active.getImplementation().getAnswer() : null;
-        if (type.equals("solve_dynamic") && answ != null && answ.indexOf('.') == -1) {
-            type = "solve";
-        }
-
-        String message = Text.getMessage("chat-reaction.format", true,
-                         Text.getMessage("reactions." + type, false, active.getQuestion(), type.equals("solve_dynamic") ? ((ReactionSolveDynamic)active).getDecimalPlaces() : "{1}")
-        );
+        String message = Text.getMessage("chat-reaction.format", true, active.getMessage());
 
         Bukkit.getOnlinePlayers().forEach(player -> {
             Text.sendNoFetch(player, isCenterFormat() ? Util.getMultilineCenteredMessage(message) : message);

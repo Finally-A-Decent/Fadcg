@@ -6,28 +6,26 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public interface Reaction {
+    void init();
+    boolean attempt(Player who, String message);
+    void reset();
+
     String getId();
     String getDisplayName();
-    boolean attempt(Player who, String message);
-
     ReactionImpl getImplementation();
-    String getQuestion();
     String getAnswer();
 
-    void reset();
+    String getMessage();
 
     default FADCR getPlugin() {
         return FADCR.getInstance();
     }
-    // TODO: Change this to a lang.yml instead of the config.
     default FileConfiguration getLang() {
         return FADCR.getLang();
     }
-
     default ChatManager getChatManager() {
         return ChatManager.getInstance();
     }
-
     default ReactionImpl[] getReactions() {
         return getChatManager().getReactionsById(getId());
     }
