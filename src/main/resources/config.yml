@@ -123,6 +123,11 @@ reactions:
     question: "Mojang"
     answer: "Mojang"
     reward: 'random'
+  unscramble_skibidi:
+    type: "unscramble"
+    question: "Skibidi Toilet"
+    answer: "Skibidi Toilet"
+    reward: 'random'
   unscramble_minecraft:
     type: "unscramble"
     question: "Minecraft"
