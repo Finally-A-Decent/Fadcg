@@ -1,5 +1,5 @@
 name: FADCR
-version: '1.0 B1-SNAPSHOT'
+version: '1.0 B2-SNAPSHOT'
 main: info.asdev.fadcr.FADCR
 api-version: '1.16'
 authors: [ASDEVJava, Preva1l]

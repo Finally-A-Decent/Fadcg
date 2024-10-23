@@ -26,17 +26,11 @@ public final class FADCR extends JavaPlugin {
         instance = this;
         saveDefaultConfig();
 
-        if (!checkConfig()) {
-            return;
-        }
-
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
-
         ChatManager.getInstance().init();
         GuiManager.getInstance().init();
 
         papiInstalled = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
-
         Bukkit.getConsoleSender().sendMessage(Text.legacyMessage("""
                 &a-------------------------------
                 &a Finally a Decent Chat Reactor
@@ -48,18 +42,6 @@ public final class FADCR extends JavaPlugin {
     public void onDisable() {
         ChatManager.getInstance().shutdown();
         GuiManager.getInstance().shutdown();
-    }
-
-    private boolean checkConfig() {
-        double detectedVersion = getConfig().getDouble("version");
-
-        if (detectedVersion < MIN_CONFIG_VERSION) {
-            getLogger().severe(String.format("Unable to continue, unsupported config version detected (%s). You may want to migrate to a new config.", detectedVersion));
-            Bukkit.getPluginManager().disablePlugin(this);
-            return false;
-        }
-
-        return true;
     }
 
     private void loadLanguageFile() {
