@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.jar.JarEntry;
 import java.util.stream.Stream;
 
 @UtilityClass
@@ -25,12 +26,18 @@ public class ReactionManager {
             configFolder.mkdir();
         }
 
-        File[] files = configFolder.listFiles(file -> file.getName().toLowerCase().endsWith(".yml"));
-        if (files == null) {
-            throw new RuntimeException("Files returned null.");
-        }
+        String[] ids = new String[] {
+                "finish_phrase",
+                "reverse",
+                "solve",
+                "type",
+                "unscramble"
+        };
 
-        Stream.of(files).forEach(file -> registerInternalReactionType(file.getName().substring(0, file.getName().length() - 4).toLowerCase(), file));
+        Stream.of(ids).forEach(id -> {
+            File file = new File(configFolder, String.join("", id, ".yml"));
+            registerInternalReactionType(file.getName().substring(0, file.getName().length() - 4).toLowerCase(), file);
+        });
     }
 
     private void registerInternalReactionType(String id, File file) {

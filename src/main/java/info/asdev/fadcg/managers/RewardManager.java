@@ -36,7 +36,7 @@ public class RewardManager {
             defaults = plugin.getResource("rewards.yml");
 
             if (!file.exists()) {
-                file.createNewFile();
+                plugin.saveResource("rewards.yml", false);
             }
 
             config = YamlConfiguration.loadConfiguration(file);

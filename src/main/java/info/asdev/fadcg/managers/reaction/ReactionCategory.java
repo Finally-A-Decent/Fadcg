@@ -55,7 +55,9 @@ public abstract class ReactionCategory {
         Validate.notNull(file, "Cannot load a config from a null file, id " + id);
 
         try {
-            file.createNewFile();
+            if (!file.exists()) {
+                plugin.saveResource(String.join("", "reactions/", file.getName()), false);
+            }
             config = YamlConfiguration.loadConfiguration(file);
 
             if (defaults != null) {
