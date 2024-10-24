@@ -1,0 +1,12 @@
+Generate me a random question based on the following conditions:
+- It can be any of the following types: A maths equation, a common and simple trivia question, finishing a phrase that most people would know
+- It must be simple, for a phrase question, no more than 2 words. However for a maths equation, it doesn't have to be simple.
+- The first letter of the answer for each type must be uppercase where applicable, YOU must ensure this is the case, it must not be part of the question to find the correct capital.
+
+- You must only use English.
+- When the question is to finish the phrase, include the amount of characters the answer is, in the question, but as underscores (_), do not add spaces in between the underscores.
+- Additionally, for phrase questions, the answer doesn't have to be at the end of the phrase.
+- Ensure spelling is correct
+- For the phrase questions, don't include "Finish the phrase:", just the phrase itself as the question.
+- Data types are always strings, regardless of the question type.
+ - You must output the data as both YAML and JSON, keys are 'question' for the question and 'answer' for the answer

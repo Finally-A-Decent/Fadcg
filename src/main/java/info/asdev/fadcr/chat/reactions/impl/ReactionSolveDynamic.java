@@ -25,10 +25,10 @@ public class ReactionSolveDynamic implements Reaction {
     @Getter private int digits, decimalPlaces;
 
     private final char[] symbols = new char[] {
-            '*',
             '+',
             '-',
-            '/'
+            '*',
+            '/',
     };
 
     @Override public void init() {

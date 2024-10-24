@@ -55,7 +55,7 @@ public class ReactionConfigManager {
                 continue;
             }
 
-            File file = new File(reactionsFolder, "reactions/" + id + ".yml");
+            File file = new File(reactionsFolder, id + ".yml");
             if (!file.exists())
             {
                 saveDefaults("reactions/" + id + ".yml", false);

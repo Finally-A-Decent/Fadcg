@@ -49,7 +49,9 @@ public class Util {
 
         StringBuilder builder = new StringBuilder();
         for (String s : message.split("\n")) {
-            builder.append("\n").append(getCenteredMessage(s));
+            builder.append("\n").append(
+                    Text.legacyMessage(getCenteredMessage(s))
+            );
         }
 
         return builder.substring(1);

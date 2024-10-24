@@ -30,18 +30,18 @@ public class ChatManager {
     @Getter private boolean running = false;
     @Getter private boolean caseSensitiveAnswers = true;
     @Getter private boolean centerFormat = false;
-    private RandomSelector<String> choiceSelector;
-    private Pattern spacesPattern = Pattern.compile(" ");
-    private Reaction active;
-    private Job job;
-    private BukkitRunnable timeoutRunnable;
-    private Map<String, Reaction> registeredReactions = new HashMap<>();
-    private Set<String> rewardKeys;
-    private Reward reward;
     private long timeout = 60_000, interval = 300_000;
-    private String timeoutMessage;
     private long startTime;
     private int minPlayers = 2;
+    private RandomSelector<String> choiceSelector;
+    private Reward reward;
+    private Job job;
+    private Reaction active;
+    private BukkitRunnable timeoutRunnable;
+    private Pattern spacesPattern = Pattern.compile(" ");
+    private Map<String, Reaction> registeredReactions = new HashMap<>();
+    private Set<String> rewardKeys;
+    private String timeoutMessage;
 
     public void init() {
         shutdown();
@@ -117,7 +117,11 @@ public class ChatManager {
             }
         };
 
-        timeoutRunnable.runTaskLater(FADCR.getInstance(), timeout / 50L);
+        double mspt = 1000;
+        float tickRate = Bukkit.getServerTickManager().getTickRate();
+        mspt = 1000d / tickRate;
+
+        timeoutRunnable.runTaskLater(FADCR.getInstance(), (long) (timeout / mspt));
         startTime = System.currentTimeMillis();
     }
 
