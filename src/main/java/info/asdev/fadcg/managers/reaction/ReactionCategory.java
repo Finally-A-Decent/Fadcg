@@ -8,6 +8,7 @@ import org.apache.commons.lang3.Validate;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,8 +21,9 @@ import java.util.*;
 
 @Getter
 @SuppressWarnings("ResultOfMethodCallIgnored")
-public class ReactionCategory {
-    @Getter  private static final Map<String, ReactionCategory> instances = new HashMap<>();
+public abstract class ReactionCategory {
+    @Getter private static final Map<String, ReactionCategory> instances = new HashMap<>();
+
     public static ReactionCategory get(String id) {
         return instances.getOrDefault(id, null);
     }
@@ -29,6 +31,7 @@ public class ReactionCategory {
     private final List<ReactionImpl> implementations = new ArrayList<>();
     private FileConfiguration config;
     private ReactionImpl activeImplementation;
+    private ChatManager chatManager;
 
     @NotNull private final Plugin plugin;
     @NotNull private final String id;
@@ -41,6 +44,7 @@ public class ReactionCategory {
         this.id = Objects.requireNonNull(id, "ID cannot be null");
         this.file = Objects.requireNonNull(file, "File cannot be null");
         this.defaults = plugin.getResource(String.join("", "reactions/", id, ".yml"));
+        this.chatManager = ChatManager.getInstance();
 
         loadConfig();
         loadImplementations();
@@ -84,4 +88,10 @@ public class ReactionCategory {
     public void create() {
         activeImplementation = implementations.get(ChatManager.getInstance().getRandom().nextInt(implementations.size()));
     }
+
+    public abstract void init();
+
+    public abstract boolean attempt(Player who, String message);
+
+    public abstract String getMessage();
 }

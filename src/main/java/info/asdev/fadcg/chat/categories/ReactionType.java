@@ -1,36 +1,28 @@
 package info.asdev.fadcg.chat.categories;
 
-import info.asdev.fadcg.chat.Reaction;
-import info.asdev.fadcg.chat.ReactionImpl;
+import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import info.asdev.fadcg.utils.Text;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
-import java.util.List;
+import java.io.File;
 
 @Getter
-@RequiredArgsConstructor
-public class ReactionType implements Reaction {
-    private final String id = "type";
+public class ReactionType extends ReactionCategory {
     private String answer;
-    private ReactionImpl implementation;
 
-    @Override public void init() {
-        List<ReactionImpl> reactions = getReactions();
-        implementation = reactions.size() == 1 ? reactions.getFirst(): reactions.get(getRandom().nextInt(reactions.size()));
-        answer = implementation.getAnswer();
+    public ReactionType(Plugin plugin, String id, File file) {
+        super(plugin, id, file);
     }
 
-    @Override public boolean attempt(Player who, String message) {
+    public void init() {
+        answer = getActiveImplementation().getAnswer();
+    }
+    public boolean attempt(Player who, String message) {
         return getChatManager().isCaseSensitiveAnswers() ? answer.equals(message) : answer.equalsIgnoreCase(message);
     }
-
-    @Override public String getMessage() {
-        return Text.getMessage("reactions." + id, false, answer);
+    public String getMessage() {
+        return Text.getMessage("reactions." + getId(), false, answer);
     }
-
-//    @Override public void reset() {
-//        answer = null;
-//    }
 }

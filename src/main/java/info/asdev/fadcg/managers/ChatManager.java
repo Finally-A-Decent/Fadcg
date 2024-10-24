@@ -1,15 +1,16 @@
 package info.asdev.fadcg.managers;
 
 import info.asdev.fadcg.Fadcg;
-import info.asdev.fadcg.chat.Reaction;
 import info.asdev.fadcg.chat.ReactionImpl;
+import info.asdev.fadcg.managers.reaction.ReactionCategory;
+import info.asdev.fadcg.managers.reaction.Reward;
 import info.asdev.fadcg.utils.Job;
-import info.asdev.fadcg.utils.RandomSelector;
 import info.asdev.fadcg.utils.Text;
 import info.asdev.fadcg.utils.Util;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -18,8 +19,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.logging.Level;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -32,25 +32,20 @@ public class ChatManager {
     private long timeout = 60_000, interval = 300_000;
     private long startTime;
     private int minPlayers = 2;
-    private RandomSelector<String> choiceSelector;
     private Reward reward;
     private Job job;
-    private Reaction active;
+    private ReactionCategory active;
     private BukkitRunnable timeoutRunnable;
     private Pattern spacesPattern = Pattern.compile(" ");
-    private Map<String, Reaction> registeredReactions = new HashMap<>();
-    private Set<String> rewardKeys;
     private String timeoutMessage;
 
     public void init() {
         shutdown();
 
         FileConfiguration config = Fadcg.getInstance().getConfig();
-        rewardKeys = ReactionConfigManager.getRewardsConfig().getConfig().getKeys(false);
 
         caseSensitiveAnswers = config.getBoolean("options.case-sensitive-answers", true);
         centerFormat = Fadcg.getLang().getBoolean("chat-reaction.center-reaction-format", false);
-        choiceSelector = RandomSelector.weighted(rewardKeys, (key) -> ReactionConfigManager.getRewardsConfig().getConfig().getDouble(key + ".chance", 1d));
 
         interval = config.getLong("options.interval", 300_000);
         timeout = config.getLong("options.timeout", 60_000);
@@ -80,7 +75,7 @@ public class ChatManager {
 
         if (timeoutRunnable != null && running) {
             timeout();
-            timeoutMessage = Text.getMessage("chat-reaction.reaction-cancelled-not-enough-players", false, active.getImplementation().getAnswer());
+            timeoutMessage = Text.getMessage("chat-reaction.reaction-cancelled-not-enough-players", false, active.getActiveImplementation().getAnswer());
             Bukkit.getOnlinePlayers().forEach(player -> {
                 Text.sendNoFetch(player, timeoutMessage);
             });
@@ -92,7 +87,13 @@ public class ChatManager {
         }
 
         running = true;
-        active = ReactionConfigManager.random();
+        active = ReactionManager.createReaction();
+
+        if (active == null) {
+            return;
+        }
+
+        //active.create();
         active.init();
 
         String message = Text.getMessage("chat-reaction.format", true, active.getMessage());
@@ -106,7 +107,7 @@ public class ChatManager {
                 if (running) {
                     timeout();
 
-                    timeoutMessage = Text.getMessage("chat-reaction.reaction-expired", false, active.getImplementation().getAnswer());
+                    timeoutMessage = Text.getMessage("chat-reaction.reaction-expired", false, active.getActiveImplementation().getAnswer());
                     Bukkit.getOnlinePlayers().forEach(player -> {
                         Text.sendNoFetch(player, timeoutMessage);
                     });
@@ -145,35 +146,12 @@ public class ChatManager {
         });
     }
     public void awardPlayer(Player who) {
-        ReactionImpl activeImpl = active.getImplementation();
+        ReactionImpl activeImpl = active.getActiveImplementation();
         String reward = activeImpl.getReward();
 
-        ConfigurationSection rewardSection = ReactionConfigManager.getRewardsConfig().getConfig();
-        rewardSection = !"random".equalsIgnoreCase(reward) ? rewardSection.getConfigurationSection(reward) : rewardSection.getConfigurationSection(choiceSelector.next(random));
-
-        if (rewardSection != null && !rewardKeys.isEmpty()) {
-            this.reward = Reward.builder().section(rewardSection).player(who).build();
-            Bukkit.getScheduler().runTask(Fadcg.getInstance(), this::giveReward);
-            Text.send(who, "chat-reaction.reaction-won", rewardSection.getString("display_name"));
-            return;
-        }
-
-        Text.send(who, "chat-reaction.no-reward");
-    }
-    private void giveReward() {
-        runCommands(reward.getPlayer(), reward.getSection().getStringList("commands"));
-    }
-    public void runCommands(Player who, List<String> commands) {
-        for (String command : commands) {
-            String parsed = command
-                    .replace("{player}", who.getName())
-                    .replace("{uuid}", who.getUniqueId().toString());
-            try {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), parsed);
-            } catch (Exception ex) {
-                Fadcg.getInstance().getLogger().log(Level.WARNING, "Reward command execution failed for command: " + parsed, ex);
-            }
-        }
+        this.reward = reward.equalsIgnoreCase("random") ? RewardManager.getRandomReward() : RewardManager.getReward(reward);
+        Bukkit.getScheduler().runTask(Fadcg.getInstance(), () -> this.reward.give(who));
+        Text.send(who, "chat-reaction.reaction-won", this.reward.getDisplayName());
     }
 
     private void timeout() {
@@ -188,13 +166,5 @@ public class ChatManager {
     }
     public static ChatManager getInstance() {
         return instance == null ? instance = new ChatManager() : instance;
-    }
-
-    @Builder
-    @Getter
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    private static class Reward {
-        private ConfigurationSection section;
-        private Player player;
     }
 }

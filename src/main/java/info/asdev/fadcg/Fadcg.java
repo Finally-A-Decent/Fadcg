@@ -2,10 +2,11 @@ package info.asdev.fadcg;
 
 import info.asdev.fadcg.managers.ChatManager;
 import info.asdev.fadcg.commands.CommandFadcg;
-import info.asdev.fadcg.managers.ReactionConfigManager;
 import info.asdev.fadcg.gui.GuiManager;
 import info.asdev.fadcg.listeners.ChatListener;
 import info.asdev.fadcg.managers.FastInvManager;
+import info.asdev.fadcg.managers.ReactionManager;
+import info.asdev.fadcg.managers.RewardManager;
 import info.asdev.fadcg.utils.Text;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -32,7 +33,9 @@ public final class Fadcg extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
         FastInvManager.register(this);
 
-        ReactionConfigManager.init();
+        //ReactionConfigManager.init();
+        ReactionManager.init();
+        RewardManager.init();
         ChatManager.getInstance().init();
         GuiManager.getInstance().init();
 

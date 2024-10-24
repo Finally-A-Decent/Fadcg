@@ -1,6 +1,6 @@
 package info.asdev.fadcg.chat;
 
-import info.asdev.fadcg.managers.ReactionConfigManager;
+import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -24,6 +24,6 @@ public class ReactionImpl {
     }
 
     public ConfigurationSection getSectionFromPath() {
-        return ReactionConfigManager.getConfig(id).getConfig().getConfigurationSection(path);
+        return ReactionCategory.get(id).getConfig().getConfigurationSection(path);
     }
 }

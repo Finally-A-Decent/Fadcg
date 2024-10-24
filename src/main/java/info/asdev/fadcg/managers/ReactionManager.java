@@ -1,31 +1,25 @@
 package info.asdev.fadcg.managers;
 
 import info.asdev.fadcg.Fadcg;
+import info.asdev.fadcg.chat.categories.*;
 import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
-import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.Set;
-import java.util.logging.Level;
 import java.util.stream.Stream;
 
 @UtilityClass
 public class ReactionManager {
-
-    // TODO:
-    // Load files from reactions/
-    // Register all
-
     private Fadcg plugin;
     @Getter private File configFolder;
 
     public void init() {
         plugin = Fadcg.getInstance();
 
-        // Load files from reactions
         configFolder = new File(plugin.getDataFolder(), "reactions/");
         if (!configFolder.exists()) {
             configFolder.mkdir();
@@ -36,35 +30,34 @@ public class ReactionManager {
             throw new RuntimeException("Files returned null.");
         }
 
-        // Register all reactions
-        Stream.of(files).forEach(file -> new ReactionCategory(
-                plugin,
-                file.getName().substring(0, file.getName().length() - 4).toLowerCase(),
-                file
-        ));
-
-        // Initialize subtypes
-
+        Stream.of(files).forEach(file -> registerInternalReactionType(file.getName().substring(0, file.getName().length() - 4).toLowerCase(), file));
     }
 
-    public void register(Plugin plugin, String id, File file) {
-        if (ReactionManager.plugin.equals(plugin)) {
-            throw new IllegalArgumentException("You cannot register reactions as Fadcg.");
-        }
-
-        try {
-            new ReactionCategory(plugin, id, file);
-        } catch (Exception ex) {
-            plugin.getLogger().log(Level.WARNING, "Failed to load reaction type " + id, ex);
+    private void registerInternalReactionType(String id, File file) {
+        switch(id) {
+            case "finish_phrase" -> new ReactionFinishPhrase(plugin, id, file);
+            case "reverse" -> new ReactionReverse(plugin, id, file);
+            case "solve" -> new ReactionSolve(plugin, id, file);
+            case "type" -> new ReactionType(plugin, id, file);
+            case "unscramble" -> new ReactionUnscramble(plugin, id, file);
+            default -> {}
         }
     }
 
     public ReactionCategory createReaction() {
         Random random = ChatManager.getInstance().getRandom();
-        String[] keys = ReactionCategory.getInstances().keySet().toArray(new String[0]);
-        ReactionCategory category = ReactionCategory.get(keys[random.nextInt(keys.length)]);
+        List<String> keys = new ArrayList<>();
 
+        ReactionCategory.getInstances().forEach((k,v) -> {
+            if (!v.isDisabled()) keys.add(k);
+        });
+        if (keys.isEmpty()) {
+            return null;
+        }
+
+        ReactionCategory category = ReactionCategory.get(keys.get(random.nextInt(keys.size())));
         category.create();
+
         return category;
     }
 }

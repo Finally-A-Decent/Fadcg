@@ -1,27 +1,24 @@
 package info.asdev.fadcg.chat.categories;
 
-import info.asdev.fadcg.chat.Reaction;
-import info.asdev.fadcg.chat.ReactionImpl;
+import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import info.asdev.fadcg.utils.Text;
 import info.asdev.fadcg.utils.Util;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
-import java.util.List;
+import java.io.File;
 
-@RequiredArgsConstructor
-public class ReactionUnscramble implements Reaction {
-    @Getter private final String id = "unscramble";
-    @Getter private ReactionImpl implementation;
+public class ReactionUnscramble extends ReactionCategory {
     @Getter private String answer;
     private String question;
 
-    @Override public void init() {
-        List<ReactionImpl> implementations = getReactions();
+    public ReactionUnscramble(Plugin plugin, String id, File file) {
+        super(plugin, id, file);
+    }
 
-        implementation = implementations.size() == 1 ? implementations.getFirst() : implementations.get(getRandom().nextInt(implementations.size()));
-        answer = implementation.getAnswer();
+    @Override public void init() {
+        answer = getActiveImplementation().getAnswer();
         question = Util.scramble(answer);
     }
 
@@ -30,13 +27,7 @@ public class ReactionUnscramble implements Reaction {
         return getChatManager().isCaseSensitiveAnswers() ? answer.equals(message) : answer.equalsIgnoreCase(message);
     }
 
-//    @Override public void reset() {
-//        answer = null;
-//        question = null;
-//    }
-
     @Override public String getMessage() {
-        return Text.getMessage("reactions." + id, false, question);
+        return Text.getMessage("reactions." + getId(), false, question);
     }
-
 }

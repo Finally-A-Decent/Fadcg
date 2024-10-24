@@ -2,8 +2,9 @@ package info.asdev.fadcg.commands;
 
 import info.asdev.fadcg.Fadcg;
 import info.asdev.fadcg.managers.ChatManager;
-import info.asdev.fadcg.managers.ReactionConfigManager;
 import info.asdev.fadcg.gui.GuiManager;
+import info.asdev.fadcg.managers.ReactionManager;
+import info.asdev.fadcg.managers.RewardManager;
 import info.asdev.fadcg.utils.Text;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,9 +35,10 @@ public class CommandFadcg implements CommandExecutor {
         if (action.equals("reload")) {
             try {
                 Fadcg.getInstance().reloadConfig();
+                ReactionManager.init();
+                RewardManager.init();
                 ChatManager.getInstance().init();
                 GuiManager.getInstance().init();
-                ReactionConfigManager.init();
 
                 Text.send(sender, "commands.reload.success");
             } catch (Exception ex) {
