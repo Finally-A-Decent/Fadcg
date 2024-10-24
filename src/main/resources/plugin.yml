@@ -1,6 +1,6 @@
 name: FADCR
-version: '1.0 B2-SNAPSHOT'
-main: info.asdev.fadcr.FADCR
+version: '1.0 B3-SNAPSHOT'
+main: info.asdev.fadcg.Fadcg
 api-version: '1.16'
 authors: [ASDEVJava, Preva1l]
 softdepend: [PlaceholderAPI]
