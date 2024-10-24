@@ -1,0 +1,16 @@
+break_iron_ore:
+  question: "Iron Ore"
+  answers: ["IRON_ORE", "DEEPSLATE_IRON_ORE"]
+  reward: "random"
+break_diamond_ore:
+  question: "Diamond Ore"
+  answers: ["DIAMOND_ORE", "DEEPSLATE_DIAMOND_ORE"]
+  reward: "random"
+break_oak_log:
+  question: "Oak Log"
+  answer: "OAK_LOG"
+  reward: "random"
+break_any_dirt:
+  question: "Any Dirt Block"
+  answers: ["DIRT", "ROOTED_DIRT", "COARSE_DIRT", "DIRT_PATH"]
+  reward: "random"

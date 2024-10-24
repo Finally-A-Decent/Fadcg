@@ -2,6 +2,7 @@ package info.asdev.fadcg.managers;
 
 import info.asdev.fadcg.Fadcg;
 import info.asdev.fadcg.chat.ReactionImpl;
+import info.asdev.fadcg.chat.ReactionMode;
 import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import info.asdev.fadcg.managers.reaction.Reward;
 import info.asdev.fadcg.utils.Job;
@@ -13,8 +14,18 @@ import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.FurnaceSmeltEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Async;
 
 import java.text.DecimalFormat;
 import java.time.Duration;
@@ -122,16 +133,72 @@ public class ChatManager {
         timeoutRunnable.runTaskLater(Fadcg.getInstance(), (long) (timeout / mspt));
         startTime = System.currentTimeMillis();
     }
+
+    @Deprecated
     public void processChatMessage(Player who, String message) {
         if (!running || active == null) {
             return;
         }
+        if (!ReactionMode.CHAT_MESSAGE.equals(active.getMode())) {
+            return;
+        }
 
-        boolean correct = active.attempt(who, message);
+        boolean correct = active.attempt(who, message, null);
         if (!correct) {
             return;
         }
 
+        onCorrectAnswer(who);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void onPlayerEvent(ReactionMode mode, Event event) {
+        if (active == null || !running) {
+            return;
+        }
+        ReactionMode activeMode = active.getMode();
+        if (!mode.equals(activeMode)) {
+            return;
+        }
+
+        boolean result = false;
+        Player who = null;
+        switch(mode) {
+            case CHAT_MESSAGE -> {
+                AsyncPlayerChatEvent ev = (AsyncPlayerChatEvent) event;
+                who = ev.getPlayer();
+                result = active.attempt(ev.getPlayer(), ev.getMessage(), event);
+            }
+            case BLOCK_BREAK -> {
+                BlockBreakEvent ev = (BlockBreakEvent) event;
+                who = ev.getPlayer();
+                result = active.attempt(ev.getPlayer(), null, event);
+            }
+            case BLOCK_PLACE -> {
+                BlockPlaceEvent ev = (BlockPlaceEvent) event;
+                who = ev.getPlayer();
+                result = active.attempt(ev.getPlayer(), null, event);
+            }
+            case CRAFT_ITEM -> {
+                CraftItemEvent ev = (CraftItemEvent) event;
+                who = (Player) ev.getWhoClicked();
+                result = active.attempt((Player) ev.getWhoClicked(), null, event);
+            }
+            case USE_ITEM -> {
+                PlayerItemConsumeEvent ev = (PlayerItemConsumeEvent) event;
+                who = ev.getPlayer();
+                result = active.attempt(ev.getPlayer(), null, event);
+            }
+        }
+
+        if (!result) {
+            return;
+        }
+
+        onCorrectAnswer(who);
+    }
+
+    private void onCorrectAnswer(Player who) {
         running = false;
         awardPlayer(who);
 
@@ -145,6 +212,7 @@ public class ChatManager {
             Text.sendNoFetch(player, solved);
         });
     }
+
     public void awardPlayer(Player who) {
         ReactionImpl activeImpl = active.getActiveImplementation();
         String reward = activeImpl.getReward();

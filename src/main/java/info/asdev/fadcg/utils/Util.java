@@ -118,4 +118,8 @@ public class Util {
         return builder.toString();
     }
 
+    public String capitalizeFirst(String message) {
+        return String.join("", message.substring(0, 1).toUpperCase(), message.substring(1));
+    }
+
 }

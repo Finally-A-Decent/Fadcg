@@ -20,6 +20,7 @@ public class ReactionManager {
 
     public void init() {
         plugin = Fadcg.getInstance();
+        ReactionCategory.getInstances().clear();
 
         configFolder = new File(plugin.getDataFolder(), "reactions/");
         if (!configFolder.exists()) {
@@ -31,7 +32,8 @@ public class ReactionManager {
                 "reverse",
                 "solve",
                 "type",
-                "unscramble"
+                "unscramble",
+                "block_break"
         };
 
         Stream.of(ids).forEach(id -> {
@@ -42,11 +44,15 @@ public class ReactionManager {
 
     private void registerInternalReactionType(String id, File file) {
         switch(id) {
+            // Chat events
             case "finish_phrase" -> new ReactionFinishPhrase(plugin, id, file);
             case "reverse" -> new ReactionReverse(plugin, id, file);
             case "solve" -> new ReactionSolve(plugin, id, file);
             case "type" -> new ReactionType(plugin, id, file);
             case "unscramble" -> new ReactionUnscramble(plugin, id, file);
+
+            // World events
+            case "block_break" -> new ReactionBlockBreak(plugin, id, file);
             default -> {}
         }
     }

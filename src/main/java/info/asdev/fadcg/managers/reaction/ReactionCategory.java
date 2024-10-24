@@ -1,6 +1,8 @@
 package info.asdev.fadcg.managers.reaction;
 
+import info.asdev.fadcg.Fadcg;
 import info.asdev.fadcg.chat.ReactionImpl;
+import info.asdev.fadcg.chat.ReactionMode;
 import info.asdev.fadcg.managers.ChatManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +11,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,12 +43,16 @@ public abstract class ReactionCategory {
     @Nullable private final InputStream defaults;
     @Setter private boolean disabled;
 
+    private ReactionMode mode = ReactionMode.CHAT_MESSAGE;
+
     public ReactionCategory(Plugin plugin, String id, File file) {
         this.plugin = Objects.requireNonNull(plugin, "Plugin cannot be null.");
         this.id = Objects.requireNonNull(id, "ID cannot be null");
         this.file = Objects.requireNonNull(file, "File cannot be null");
         this.defaults = plugin.getResource(String.join("", "reactions/", id, ".yml"));
         this.chatManager = ChatManager.getInstance();
+
+        this.disabled = Fadcg.getInstance().getConfig().getStringList("options.disabled-chat-reactions").contains(id.toLowerCase());
 
         loadConfig();
         loadImplementations();
@@ -78,12 +86,14 @@ public abstract class ReactionCategory {
             ConfigurationSection section = config.getConfigurationSection(key);
 
             String question = section.getString("question");
-            String answer = section.getString("answer");
+            List<String> answers = section.getStringList("answers");
             String reward = section.getString("reward");
 
-            implementations.add(new ReactionImpl(
-                    id, key, id, question, answer, reward
-            ));
+            if (answers.isEmpty()) {
+                answers = List.of(section.getString("answer"));
+            }
+
+            implementations.add(new ReactionImpl(id, key, id, question, answers, reward));
         }
     }
 
@@ -93,7 +103,7 @@ public abstract class ReactionCategory {
 
     public abstract void init();
 
-    public abstract boolean attempt(Player who, String message);
+    public abstract boolean attempt(Player who, String message, @Nullable Event event);
 
     public abstract String getMessage();
 }

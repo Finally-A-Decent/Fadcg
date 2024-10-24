@@ -1,24 +1,20 @@
 package info.asdev.fadcg.gui;
 
-import info.asdev.fadcg.gui.lib.FastInv;
+import lombok.experimental.UtilityClass;
+import org.bukkit.entity.Player;
 
+@UtilityClass
 public class GuiManager {
-    private static GuiManager instance;
-    private GuiManager() {}
-
-    private FastInv categoriesInv;
+    private CategoryInventory categoriesInv;
 
     public void init() {
-        categoriesInv = new FastInv(36);
-
-        for (int i = 0; i < 1; i++) {}
+        categoriesInv = new CategoryInventory(36, "Reaction Categories");
+        categoriesInv.init();
     }
 
-    public void shutdown() {
+   public void openCategoriesInventory(Player who) {
+        categoriesInv.open(who);
+   }
 
-    }
 
-    public static GuiManager getInstance() {
-        return instance == null ? instance = new GuiManager() : instance;
-    }
 }

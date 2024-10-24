@@ -19,17 +19,21 @@ chat-reaction:
   # It will be auto resolved to the corresponding reaction message in the 'reactions' section below.
   format:
     - " "
-    - "&lCHAT REACTION"
-    - "&r{0}"
+    - "&9&lCHAT GAME"
+    - "{0}"
     - " "
 # When setting these, make sure you include {0}, as this is the actual question contents.
 # For instance, in a solve reaction, it'd become the equation they need to work out (100 + 50, for example)
 reactions:
-    unscramble: "Unscramble the following word/phrase: &c{0}"
-    type: "Type the following word/phrase: &c{0}"
-    solve: "Solve the following math equation: &c{0}"
-    reverse: "Reverse the following word/phrase: &c{0}"
-    finish_phrase: "Finish the phrase: &c{0}"
+    unscramble: "&7Unscramble the following word/phrase: &c{0}"
+    type: "&7Type the following word/phrase: &c{0}"
+    solve: "&7Solve the following math equation: &c{0}"
+    reverse: "&7Reverse the following word/phrase: &c{0}"
+    finish_phrase: "&7Finish the phrase: &c{0}"
+    block_break: "&7Break the following block: &c{0}"
+    block_place: "&7Place the following block: &c{0}"
+    craft_item: "&7Craft the following item: &c{0}"
+    use_item: "&7Consume the following item: &c{0}"
 
 commands:
   errors:

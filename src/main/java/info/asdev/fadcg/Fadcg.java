@@ -37,7 +37,7 @@ public final class Fadcg extends JavaPlugin {
         ReactionManager.init();
         RewardManager.init();
         ChatManager.getInstance().init();
-        GuiManager.getInstance().init();
+        GuiManager.init();
 
         getCommand("fadcg").setExecutor(new CommandFadcg());
 
@@ -52,7 +52,6 @@ public final class Fadcg extends JavaPlugin {
     @Override
     public void onDisable() {
         ChatManager.getInstance().shutdown();
-        GuiManager.getInstance().shutdown();
     }
 
     private void loadLanguageFile() {
