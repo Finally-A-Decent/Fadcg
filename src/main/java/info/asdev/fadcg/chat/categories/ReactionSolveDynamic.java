@@ -1,7 +1,7 @@
-package info.asdev.fadcg.chat.reactions.impl;
+package info.asdev.fadcg.chat.categories;
 
-import info.asdev.fadcg.chat.reactions.Reaction;
-import info.asdev.fadcg.chat.reactions.ReactionImpl;
+import info.asdev.fadcg.chat.Reaction;
+import info.asdev.fadcg.chat.ReactionImpl;
 import info.asdev.fadcg.managers.ReactionConfigManager;
 import info.asdev.fadcg.utils.Text;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import java.util.Random;
 @ApiStatus.Experimental
 public class ReactionSolveDynamic implements Reaction {
 
-    @Getter private final String id, displayName;
+    @Getter private final String id = "solve_dynamic";
 
     @Getter private ReactionImpl implementation;
     @Getter private String question;
@@ -103,10 +103,5 @@ public class ReactionSolveDynamic implements Reaction {
         }
 
         return result.toString();
-    }
-
-    @Override public void reset() {
-        answer = null;
-        question = null;
     }
 }

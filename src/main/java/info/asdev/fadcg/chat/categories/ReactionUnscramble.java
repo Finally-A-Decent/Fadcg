@@ -1,7 +1,7 @@
-package info.asdev.fadcg.chat.reactions.impl;
+package info.asdev.fadcg.chat.categories;
 
-import info.asdev.fadcg.chat.reactions.Reaction;
-import info.asdev.fadcg.chat.reactions.ReactionImpl;
+import info.asdev.fadcg.chat.Reaction;
+import info.asdev.fadcg.chat.ReactionImpl;
 import info.asdev.fadcg.utils.Text;
 import info.asdev.fadcg.utils.Util;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class ReactionUnscramble implements Reaction {
-    @Getter private final String id, displayName;
+    @Getter private final String id = "unscramble";
     @Getter private ReactionImpl implementation;
     @Getter private String answer;
     private String question;
@@ -30,10 +30,10 @@ public class ReactionUnscramble implements Reaction {
         return getChatManager().isCaseSensitiveAnswers() ? answer.equals(message) : answer.equalsIgnoreCase(message);
     }
 
-    @Override public void reset() {
-        answer = null;
-        question = null;
-    }
+//    @Override public void reset() {
+//        answer = null;
+//        question = null;
+//    }
 
     @Override public String getMessage() {
         return Text.getMessage("reactions." + id, false, question);

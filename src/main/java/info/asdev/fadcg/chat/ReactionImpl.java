@@ -1,4 +1,4 @@
-package info.asdev.fadcg.chat.reactions;
+package info.asdev.fadcg.chat;
 
 import info.asdev.fadcg.managers.ReactionConfigManager;
 import lombok.Getter;

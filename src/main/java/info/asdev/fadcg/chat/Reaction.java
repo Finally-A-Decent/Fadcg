@@ -1,4 +1,4 @@
-package info.asdev.fadcg.chat.reactions;
+package info.asdev.fadcg.chat;
 
 import info.asdev.fadcg.Fadcg;
 import info.asdev.fadcg.managers.ChatManager;
@@ -12,10 +12,9 @@ import java.util.Random;
 public interface Reaction {
     void init();
     boolean attempt(Player who, String message);
-    void reset();
+    //void reset();
 
     String getId();
-    String getDisplayName();
     ReactionImpl getImplementation();
     String getAnswer();
     String getMessage();

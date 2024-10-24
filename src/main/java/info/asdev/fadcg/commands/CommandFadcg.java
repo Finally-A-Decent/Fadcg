@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Level;
 
-public class CommandFADCG implements CommandExecutor {
+public class CommandFadcg implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

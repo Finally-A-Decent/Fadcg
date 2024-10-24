@@ -1,7 +1,7 @@
-package info.asdev.fadcg.chat.reactions.impl;
+package info.asdev.fadcg.chat.categories;
 
-import info.asdev.fadcg.chat.reactions.Reaction;
-import info.asdev.fadcg.chat.reactions.ReactionImpl;
+import info.asdev.fadcg.chat.Reaction;
+import info.asdev.fadcg.chat.ReactionImpl;
 import info.asdev.fadcg.utils.Text;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,10 +9,9 @@ import org.bukkit.entity.Player;
 
 @Getter
 @RequiredArgsConstructor
-public class ReactionFinishPhrase implements Reaction {
-    private final String id, displayName;
-    private String question;
-    private String answer;
+public class ReactionReverse implements Reaction {
+    private final String id = "reverse";
+    private String question, answer;
     private ReactionImpl implementation;
 
     @Override public void init() {
@@ -25,10 +24,10 @@ public class ReactionFinishPhrase implements Reaction {
         return getChatManager().isCaseSensitiveAnswers() ? answer.equals(message) : answer.equalsIgnoreCase(message);
     }
 
-    @Override public void reset() {
-        question = null;
-        answer = null;
-    }
+//    @Override public void reset() {
+//        answer = null;
+//        question = null;
+//    }
 
     @Override public String getMessage() {
         return Text.getMessage("reactions." + id, false, question);

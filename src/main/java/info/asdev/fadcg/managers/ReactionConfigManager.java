@@ -2,8 +2,9 @@ package info.asdev.fadcg.managers;
 
 import com.google.common.collect.Lists;
 import info.asdev.fadcg.Fadcg;
-import info.asdev.fadcg.chat.reactions.*;
-import info.asdev.fadcg.chat.reactions.impl.*;
+import info.asdev.fadcg.chat.Reaction;
+import info.asdev.fadcg.chat.ReactionImpl;
+import info.asdev.fadcg.chat.categories.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
@@ -15,11 +16,14 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.stream.Stream;
 
 @UtilityClass
+@Deprecated
 public class ReactionConfigManager {
     private final Map<String, List<ReactionImpl>> loadedReactions = new HashMap<>();
     private final Map<String, Config> reactionConfigs = new HashMap<>();
+    private Map<String, Reaction> reactions = new HashMap<>();
 
     @Getter private File reactionsFolder;
     @Getter private File rewardsFile;
@@ -34,6 +38,14 @@ public class ReactionConfigManager {
 
         reactionsFolder = new File(Fadcg.getInstance().getDataFolder(), "reactions/");
         loadReactionConfigs();
+
+        Stream.of(
+                new ReactionSolve(),
+                new ReactionType(),
+                new ReactionReverse(),
+                new ReactionFinishPhrase(),
+                new ReactionUnscramble()
+        ).forEach(reaction -> reactions.put(reaction.getId(), reaction));
     }
 
     private void loadReactionConfigs() {
@@ -66,7 +78,6 @@ public class ReactionConfigManager {
             loadReactionsById(id);
         }
 
-        // Load reward config
         rewardsFile = new File(Fadcg.getInstance().getDataFolder(), "rewards.yml");
         if (!rewardsFile.exists()) {
             saveDefaults("rewards.yml", false);
@@ -76,7 +87,6 @@ public class ReactionConfigManager {
         rewardsConfig.reload();
         rewardsConfig.setDefaults(Fadcg.getInstance().getResource("rewards.yml"));
     }
-
     public void loadReactionsById(String id) {
         for (Map.Entry<String, Config> configV : reactionConfigs.entrySet()) {
             FileConfiguration config = configV.getValue().config;
@@ -103,18 +113,18 @@ public class ReactionConfigManager {
             }
         }
     }
-
     public void saveDefaults(String resourceName, boolean replace) {
         Fadcg fadcr = Fadcg.getInstance();
         if (fadcr.getResource(resourceName) != null) {
             fadcr.saveResource(resourceName, replace);
         }
     }
-
+    public void registerReaction(Reaction reaction) {
+        reactions.putIfAbsent(reaction.getId(), reaction);
+    }
     public List<ReactionImpl> getReactionImplementationsById(String id) {
         return loadedReactions.containsKey(id) ? loadedReactions.get(id) : new ArrayList<>();
     }
-
     public Reaction random() {
         String id = "unscramble";
         Random random = ChatManager.getInstance().getRandom();
@@ -123,21 +133,13 @@ public class ReactionConfigManager {
         if (ids.isEmpty()) {
             return null;
         }
+
         id = ids.get(random.nextInt(ids.size()));
-
-        return switch(id) {
-            case "solve" -> new ReactionSolve("solve", "Solve");
-            case "type" -> new ReactionType("type", "Type");
-            case "reverse" -> new ReactionReverse("reverse", "Reverse");
-            case "finish_phrase" -> new ReactionFinishPhrase("finish_phrase", "Finish Phrase");
-            default -> new ReactionUnscramble("unscramble", "Unscramble");
-        };
+        return reactions.getOrDefault(id, null);
     }
-
     public Config getConfig(String id) {
         return reactionConfigs.getOrDefault(id, null);
     }
-
     public boolean isDisabled(String id) {
         return disabledTypes.contains(id.toLowerCase());
     }
@@ -159,5 +161,4 @@ public class ReactionConfigManager {
             config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(resource)));
         }
     }
-
 }

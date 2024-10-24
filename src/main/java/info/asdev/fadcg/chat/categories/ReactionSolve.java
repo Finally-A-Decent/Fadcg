@@ -1,7 +1,7 @@
-package info.asdev.fadcg.chat.reactions.impl;
+package info.asdev.fadcg.chat.categories;
 
-import info.asdev.fadcg.chat.reactions.Reaction;
-import info.asdev.fadcg.chat.reactions.ReactionImpl;
+import info.asdev.fadcg.chat.Reaction;
+import info.asdev.fadcg.chat.ReactionImpl;
 import info.asdev.fadcg.managers.ReactionConfigManager;
 import info.asdev.fadcg.utils.Text;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public class ReactionSolve implements Reaction {
-    private final String id, displayName;
+    private final String id = "solve";
     private ReactionImpl implementation;
     private String question;
     private String answer;
@@ -34,7 +34,7 @@ public class ReactionSolve implements Reaction {
         return Text.getMessage("reactions." + id, false, question);
     }
 
-    @Override public void reset() {
-        answer = null;
-    }
+//    @Override public void reset() {
+//        answer = null;
+//    }
 }

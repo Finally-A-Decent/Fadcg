@@ -1,7 +1,7 @@
-package info.asdev.fadcg.chat.reactions.impl;
+package info.asdev.fadcg.chat.categories;
 
-import info.asdev.fadcg.chat.reactions.Reaction;
-import info.asdev.fadcg.chat.reactions.ReactionImpl;
+import info.asdev.fadcg.chat.Reaction;
+import info.asdev.fadcg.chat.ReactionImpl;
 import info.asdev.fadcg.utils.Text;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public class ReactionType implements Reaction {
-    private final String id, displayName;
+    private final String id = "type";
     private String answer;
     private ReactionImpl implementation;
 
@@ -30,7 +30,7 @@ public class ReactionType implements Reaction {
         return Text.getMessage("reactions." + id, false, answer);
     }
 
-    @Override public void reset() {
-        answer = null;
-    }
+//    @Override public void reset() {
+//        answer = null;
+//    }
 }

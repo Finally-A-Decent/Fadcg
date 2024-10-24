@@ -1,7 +1,7 @@
 package info.asdev.fadcg;
 
 import info.asdev.fadcg.managers.ChatManager;
-import info.asdev.fadcg.commands.CommandFADCG;
+import info.asdev.fadcg.commands.CommandFadcg;
 import info.asdev.fadcg.managers.ReactionConfigManager;
 import info.asdev.fadcg.gui.GuiManager;
 import info.asdev.fadcg.listeners.ChatListener;
@@ -36,14 +36,14 @@ public final class Fadcg extends JavaPlugin {
         ChatManager.getInstance().init();
         GuiManager.getInstance().init();
 
-        getCommand("fadcg").setExecutor(new CommandFADCG());
+        getCommand("fadcg").setExecutor(new CommandFadcg());
 
         papiInstalled = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
         Bukkit.getConsoleSender().sendMessage(Text.legacyMessage("""
-                &a-------------------------------
-                &a Finally a Decent Chat Reactor
-                &a     Enabled Successfully
-                &a-------------------------------"""));
+                &a--------------------------------
+                &a   Finally a Decent Chat Games
+                &a      Enabled Successfully
+                &a--------------------------------"""));
     }
 
     @Override

@@ -1,7 +1,8 @@
 package info.asdev.fadcg.managers;
 
 import info.asdev.fadcg.Fadcg;
-import info.asdev.fadcg.chat.reactions.*;
+import info.asdev.fadcg.chat.Reaction;
+import info.asdev.fadcg.chat.ReactionImpl;
 import info.asdev.fadcg.utils.Job;
 import info.asdev.fadcg.utils.RandomSelector;
 import info.asdev.fadcg.utils.Text;
@@ -71,7 +72,6 @@ public class ChatManager {
     public void runNow() {
         runJob();
     }
-
     public void onPlayerLeave(PlayerQuitEvent event) {
         int count = Util.getOnlineSizeExcluding(event.getPlayer());
         if (count >= minPlayers) {
@@ -86,7 +86,6 @@ public class ChatManager {
             });
         }
     }
-
     private void runJob() {
         if (running || Bukkit.getOnlinePlayers().size() < minPlayers) {
             return;
@@ -122,7 +121,6 @@ public class ChatManager {
         timeoutRunnable.runTaskLater(Fadcg.getInstance(), (long) (timeout / mspt));
         startTime = System.currentTimeMillis();
     }
-
     public void processChatMessage(Player who, String message) {
         if (!running || active == null) {
             return;
@@ -132,9 +130,6 @@ public class ChatManager {
         if (!correct) {
             return;
         }
-
-        active.reset();
-        reward = null;
 
         running = false;
         awardPlayer(who);
@@ -149,7 +144,6 @@ public class ChatManager {
             Text.sendNoFetch(player, solved);
         });
     }
-
     public void awardPlayer(Player who) {
         ReactionImpl activeImpl = active.getImplementation();
         String reward = activeImpl.getReward();
@@ -161,15 +155,14 @@ public class ChatManager {
             this.reward = Reward.builder().section(rewardSection).player(who).build();
             Bukkit.getScheduler().runTask(Fadcg.getInstance(), this::giveReward);
             Text.send(who, "chat-reaction.reaction-won", rewardSection.getString("display_name"));
-        } else {
-            Text.send(who, "chat-reaction.no-reward");
+            return;
         }
-    }
 
+        Text.send(who, "chat-reaction.no-reward");
+    }
     private void giveReward() {
         runCommands(reward.getPlayer(), reward.getSection().getStringList("commands"));
     }
-
     public void runCommands(Player who, List<String> commands) {
         for (String command : commands) {
             String parsed = command
@@ -192,9 +185,7 @@ public class ChatManager {
         if (timeoutRunnable != null && !timeoutRunnable.isCancelled()) {
             timeoutRunnable.cancel();
         }
-        active.reset();
     }
-
     public static ChatManager getInstance() {
         return instance == null ? instance = new ChatManager() : instance;
     }
