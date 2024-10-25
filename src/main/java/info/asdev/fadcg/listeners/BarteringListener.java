@@ -1,5 +1,6 @@
 package info.asdev.fadcg.listeners;
 
+import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import info.asdev.fadcg.Fadcg;
 import info.asdev.fadcg.chat.ReactionMode;
 import info.asdev.fadcg.events.PlayerBarterEvent;
@@ -18,9 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDropItemEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.entity.PiglinBarterEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
@@ -131,5 +130,46 @@ public class BarteringListener implements Listener {
         }
 
         ChatManager.getInstance().onPlayerEvent(ReactionMode.PIGLIN_BARTER, event);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityDeath(EntityDeathEvent event) {
+        if (!event.getEntityType().equals(EntityType.PIGLIN)) {
+            return;
+        }
+
+        handleDeath((Piglin) event.getEntity());
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityRemove(EntityRemoveFromWorldEvent event) {
+        if (!event.getEntityType().equals(EntityType.PIGLIN)) {
+            return;
+        }
+
+        handleDeath((Piglin) event.getEntity());
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityMorph(EntityTransformEvent event) {
+        if (!event.getEntity().getType().equals(EntityType.PIGLIN)) {
+            return;
+        }
+
+        handleDeath((Piglin) event.getEntity());
+    }
+
+    public void handleDeath(Piglin piglin) {
+        String uuid = null;
+        for (Map.Entry<String, Piglin> vals : bartering.entrySet()) {
+            if (vals.getValue().equals(piglin)) {
+               uuid = vals.getKey();
+                break;
+            }
+        }
+
+        if (uuid != null) {
+            bartering.remove(uuid);
+        }
     }
 }
