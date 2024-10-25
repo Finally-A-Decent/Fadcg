@@ -132,8 +132,4 @@ public class BarteringListener implements Listener {
 
         ChatManager.getInstance().onPlayerEvent(ReactionMode.PIGLIN_BARTER, event);
     }
-
-    public void logAll(String msg) {
-        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(msg));
-    }
 }
