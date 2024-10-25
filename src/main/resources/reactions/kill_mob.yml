@@ -1,0 +1,16 @@
+kill_skeleton:
+  question: "Any Skeleton"
+  answers: ["SKELETON", "WITHER_SKELETON", "STRAY"]
+  reward: "random"
+kill_chicken:
+  question: "Chicken"
+  answer: "CHICKEN"
+  reward: "random"
+kill_pillager:
+  question: "Any Pillager"
+  answers: ["PILLAGER", "ILLUSIONER"]
+  reward: "random"
+kill_creeper:
+  question: "Creeper"
+  answer: "CREEPER"
+  reward: "random"

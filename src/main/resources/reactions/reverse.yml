@@ -1,6 +1,6 @@
-reverse_fadcr:
-  question: "FADCR"
-  answer: "RCDAF"
+reverse_fadcg:
+  question: "Fadcg"
+  answer: "gcdaF"
   reward: "random"
 reverse_fadah:
   question: "Fadah"

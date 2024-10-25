@@ -2,10 +2,12 @@ package info.asdev.fadcg.commands;
 
 import com.google.common.collect.Lists;
 import info.asdev.fadcg.Fadcg;
+import info.asdev.fadcg.chat.ReactionImpl;
 import info.asdev.fadcg.managers.ChatManager;
 import info.asdev.fadcg.gui.GuiManager;
 import info.asdev.fadcg.managers.ReactionManager;
 import info.asdev.fadcg.managers.RewardManager;
+import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import info.asdev.fadcg.utils.Text;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,7 +20,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public class CommandFadcg implements CommandExecutor, TabCompleter {
 
@@ -55,9 +59,43 @@ public class CommandFadcg implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (action.equals("run-now")) {
+        if (action.equals("run-now") || action.equals("force")) {
             if (ChatManager.getInstance().isRunning()) {
                 Text.send(sender, "commands.errors.requirements-not-met");
+                return true;
+            }
+
+            boolean force = action.equals("force");
+
+            if (args.length >= 2) {
+                String category = args[1].toLowerCase();
+                String id = null; //args[2].toLowerCase();
+
+                if (!ReactionCategory.getInstances().containsKey(category)) {
+                    Text.send(sender, "commands.run-now.category-not-found", args[1]);
+                    return true;
+                }
+
+                ReactionCategory categoryImpl = ReactionCategory.get(category);
+                if (categoryImpl.isDisabled()) {
+                    Text.send(sender, "commands.run-now.category-disabled", args[1]);
+                    return true;
+                }
+
+                ReactionImpl impl = null;
+                if (args.length >= 3) {
+                    id = args[2].toLowerCase();
+                    impl = categoryImpl.getImplementationByPath(id.toLowerCase());
+                } else {
+                    impl = categoryImpl.getImplementations().get(ChatManager.getInstance().getRandom().nextInt(categoryImpl.getImplementations().size()));
+                }
+
+                if (impl == null) {
+                    Text.send(sender, "commands.run-now.id-not-found", args[2], args[1]);
+                    return true;
+                }
+
+                ChatManager.getInstance().runSpecificReaction(categoryImpl, impl, force);
                 return true;
             }
 
@@ -77,10 +115,14 @@ public class CommandFadcg implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        List<String> available = Lists.newArrayList("reload", "run-now");
+        List<String> available = Lists.newArrayList("reload", "run-now", "force");
 
         if (!sender.hasPermission("fadcg.admin")) {
             return List.of();
+        }
+
+        if (args[0].equalsIgnoreCase("run-now") || args[0].equalsIgnoreCase("force")) {
+            return tabCompleteRunNow(sender, args);
         }
 
         if (sender.hasPermission("fadcg.admin.gui")) {
@@ -100,5 +142,23 @@ public class CommandFadcg implements CommandExecutor, TabCompleter {
         }
 
         return a;
+    }
+
+    private List<String> tabCompleteRunNow(CommandSender sender, String[] args) {
+        Set<String> categories = ReactionCategory.getInstances().keySet();
+        categories = categories.stream().filter(category -> !ReactionCategory.get(category).isDisabled()).collect(Collectors.toSet());
+        List<String> opts = filter(args.length == 2 ? args[1] : "", categories.toArray(new String[0]));
+
+        if (args.length == 2 || args.length == 3) {
+            ReactionCategory category = ReactionCategory.get(args[1].toLowerCase());
+            if (category == null) {
+                return opts;
+            }
+            opts.clear();
+            List<ReactionImpl> impls = category.getImplementations();
+            impls.forEach(impl -> opts.add(impl.getPath()));
+        }
+
+        return opts;
     }
 }

@@ -1,5 +1,6 @@
 package info.asdev.fadcg;
 
+import info.asdev.fadcg.listeners.BarteringListener;
 import info.asdev.fadcg.managers.ChatManager;
 import info.asdev.fadcg.commands.CommandFadcg;
 import info.asdev.fadcg.gui.GuiManager;
@@ -16,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.InputStreamReader;
+import java.util.stream.Stream;
 
 public final class Fadcg extends JavaPlugin {
     public static final double MIN_CONFIG_VERSION = 1d;
@@ -30,7 +32,10 @@ public final class Fadcg extends JavaPlugin {
         instance = this;
         saveDefaultConfig();
 
-        Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
+        Stream.of(
+                new ChatListener(),
+                new BarteringListener()
+        ).forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, this));
         FastInvManager.register(this);
 
         //ReactionConfigManager.init();

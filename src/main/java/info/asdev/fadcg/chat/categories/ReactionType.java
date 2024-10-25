@@ -1,5 +1,6 @@
 package info.asdev.fadcg.chat.categories;
 
+import info.asdev.fadcg.chat.ReactionImpl;
 import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import info.asdev.fadcg.utils.Text;
 import lombok.Getter;
@@ -18,9 +19,10 @@ public class ReactionType extends ReactionCategory {
         super(plugin, id, file);
     }
 
-    public void init() {
-        answer = getActiveImplementation().getAnswer();
+    public void init(ReactionImpl implementation) {
+        answer = implementation.getAnswer();
     }
+
     @Override public boolean attempt(Player who, String message, Event event) {
         if (!getActiveImplementation().hasMultipleAnswers()) {
             return getChatManager().isCaseSensitiveAnswers() ? answer.equals(message) : answer.equalsIgnoreCase(message);
@@ -35,5 +37,8 @@ public class ReactionType extends ReactionCategory {
     }
     public String getMessage() {
         return Text.getMessage("reactions." + getId(), false, answer);
+    }
+    @Override public String getExpiryMessage() {
+        return Text.getMessage("chat-reaction.reaction-expired." + getId(), false, getActiveImplementation().getQuestion());
     }
 }

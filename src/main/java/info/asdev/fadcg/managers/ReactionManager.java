@@ -5,6 +5,7 @@ import info.asdev.fadcg.chat.categories.*;
 import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
+import org.bukkit.event.entity.PiglinBarterEvent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,7 +34,12 @@ public class ReactionManager {
                 "solve",
                 "type",
                 "unscramble",
-                "block_break"
+                "block_break",
+                "block_place",
+                "kill_mob",
+                "craft_item",
+                "villager_trade",
+                "piglin_barter"
         };
 
         Stream.of(ids).forEach(id -> {
@@ -53,6 +59,11 @@ public class ReactionManager {
 
             // World events
             case "block_break" -> new ReactionBlockBreak(plugin, id, file);
+            case "block_place" -> new ReactionBlockPlace(plugin, id, file);
+            case "craft_item" -> new ReactionCraftItem(plugin, id, file);
+            case "kill_mob" -> new ReactionKillMob(plugin, id, file);
+            case "villager_trade" -> new ReactionTrade(plugin, id, file);
+            case "piglin_barter" -> new ReactionBarter(plugin, id, file);
             default -> {}
         }
     }

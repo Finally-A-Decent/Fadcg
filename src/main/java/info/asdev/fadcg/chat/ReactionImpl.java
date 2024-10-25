@@ -36,4 +36,13 @@ public class ReactionImpl {
     public boolean hasMultipleAnswers() {
         return answers.size() > 1;
     }
+
+    public String getAnswersAsString() {
+        if (!hasMultipleAnswers()) {
+            return answer;
+        }
+
+        String answersString = String.join("&7, &c", answers);
+        return answersString.substring(4);
+    }
 }

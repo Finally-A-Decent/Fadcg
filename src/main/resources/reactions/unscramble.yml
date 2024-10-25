@@ -14,7 +14,7 @@ unscramble_iron:
   question: "Iron"
   answer: "Iron"
   reward: 'random'
-unscramble_Cactus:
+unscramble_cactus:
   question: "Cactus"
   answer: "Cactus"
   reward: 'random'
@@ -58,7 +58,7 @@ unscramble_crying_cbsidian:
   question: "Crying Obsidian"
   answer: "Crying Obsidian"
   reward: "random"
-unscramble_cbsidian:
+unscramble_obsidian:
   question: "Obsidian"
   answer: "Obsidian"
   reward: 'random'

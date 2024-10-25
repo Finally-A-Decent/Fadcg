@@ -1,0 +1,16 @@
+craft_golden_apple:
+  question: "Golden Apple"
+  answer: "GOLDEN_APPLE"
+  reward: "random"
+craft_any_diamond_tool:
+  question: "Any Diamond Tool"
+  answers: ["DIAMOND_PICKAXE", "DIAMOND_SHOVEL", "DIAMOND_AXE", "DIAMOND_SWORD", "DIAMOND_HOE"]
+  reward: "random"
+craft_mossy_cobblestone:
+  question: "Mossy Cobblestone"
+  answer: "MOSSY_COBBLESTONE"
+  reward: "random"
+craft_ender_chest:
+  question: "Ender Chest"
+  answer: "ENDER_CHEST"
+  reward: "random"

@@ -8,11 +8,24 @@
 version: 1.0
 
 chat-reaction:
-  reaction-expired: "Too late! The answer was &c{0}"
+  reaction-expired:
+    unscramble: "&7Nobody unscrambled the word &c{0}&7 in time."
+    type: "&7Nobody wrote &c{0}&7 in time."
+    solve: "&7Too late! The answer was &c{0}&7."
+    reverse: "&7Too late! The answer was &c{0}&7."
+    finish_phrase: "&7Too late! The answer was &c{0}&7."
+    block_break: "&7Nobody broke &c{0}&7 in time."
+    block_place: "&7Nobody placed &c{0}&7 in time."
+    craft_item: "&7Nobody crafted &c{0}&7 in time."
+    use_item: "*7Nobody consumed &c{0}&7 in time"
+    kill_mob: "&7Nobody killed &c{0}&7 in time."
+    villager_trade: "&7Nobody traded for &c{0}&7 in time."
+    piglin_barter: "&7Nobody bartered for &c{0}&7 in time."
+
   reaction-cancelled-not-enough-players: "&cThe chat reaction was cancelled as there are not enough players."
-  reaction-won: "You claimed the '&c{0}&f' reward!"
+  reaction-won: "&7You claimed the '&c{0}&7' reward!"
   no-reward: "&cNo reward was configured for this chat reaction, so you sadly haven't received one."
-  solved-by: "&c{0}&f solved the chat reaction in &c{1}&f seconds."
+  solved-by: "&c{0}&f completed the chat game in &c{1}&f seconds."
   time-format: "#0.00"
   center-reaction-format: true
   # {0} here is the reaction type, so 'unscramble', 'solve', etc.
@@ -34,6 +47,9 @@ reactions:
     block_place: "&7Place the following block: &c{0}"
     craft_item: "&7Craft the following item: &c{0}"
     use_item: "&7Consume the following item: &c{0}"
+    kill_mob: "&7Kill the following mob: &c{0}"
+    villager_trade: "&7Trade with a villager for: &c{0}"
+    piglin_barter: "&7Barter with a Piglin for: &c{0}"
 
 commands:
   errors:
@@ -42,3 +58,7 @@ commands:
     requirements-not-met: "&cUnable to run a chat reaction early: Minimum requirements not met."
   reload:
       success: "&aEverything should have reloaded."
+  run-now:
+    category-not-found: "&c{0}&7 is not a valid reaction category."
+    category-disabled: "&c{0}&7 reactions are disabled."
+    id-not-found: "&c{0}&7 was not found in the &c{1}&7 category."

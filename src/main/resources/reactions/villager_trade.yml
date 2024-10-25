@@ -1,0 +1,16 @@
+trade_for_bookshelf:
+  question: "Bookshelf"
+  answer: "BOOKSHELF"
+  reward: "random"
+trade_for_emerald:
+  question: "Emerald"
+  answer: "EMERALD"
+  reward: "random"
+trade_for_lantern:
+  question: "Lantern"
+  answer: "LANTERN"
+  reward: "random"
+trade_for_glass:
+  question: "Glass"
+  answer: "GLASS"
+  reward: "random"

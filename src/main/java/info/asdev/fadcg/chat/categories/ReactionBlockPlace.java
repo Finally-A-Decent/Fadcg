@@ -8,7 +8,7 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -16,16 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-public class ReactionBlockBreak extends ReactionCategory {
-    private List<Material> toBreak;
-    @Getter private final ReactionMode mode = ReactionMode.BLOCK_BREAK;
+public class ReactionBlockPlace extends ReactionCategory {
+    private List<Material> toPlace;
+    @Getter private final ReactionMode mode = ReactionMode.BLOCK_PLACE;
 
-    public ReactionBlockBreak(Plugin plugin, String id, File file) {
+    public ReactionBlockPlace(Plugin plugin, String id, File file) {
         super(plugin, id, file);
     }
 
     @Override public void init(ReactionImpl implementation) {
-        toBreak = new ArrayList<>();
+        toPlace = new ArrayList<>();
         if (implementation.hasMultipleAnswers()) {
             List<String> materialNames = implementation.getAnswers();
 
@@ -36,9 +36,9 @@ public class ReactionBlockBreak extends ReactionCategory {
                         throw new IllegalArgumentException(materialName + " is not a valid block.");
                     }
 
-                    toBreak.add(material);
+                    toPlace.add(material);
                 } catch (EnumConstantNotPresentException | IllegalArgumentException ex) {
-                    getPlugin().getLogger().log(Level.WARNING, "Unable to add chat reaction answer for BLOCK_BREAK: " + implementation.getAnswer().toUpperCase() + ": " + ex.getMessage());
+                    getPlugin().getLogger().log(Level.WARNING, "Unable to add chat reaction answer for BLOCK_PLACE: " + implementation.getAnswer().toUpperCase() + ": " + ex.getMessage());
                 }
             }
 
@@ -51,15 +51,15 @@ public class ReactionBlockBreak extends ReactionCategory {
                 throw new IllegalArgumentException(implementation.getAnswer() + " is not a valid block.");
             }
 
-            toBreak.add(material);
+            toPlace.add(material);
         } catch (EnumConstantNotPresentException | IllegalArgumentException ex) {
-            getPlugin().getLogger().log(Level.WARNING, "Unable to set chat reaction answer for BLOCK_BREAK: " + implementation.getAnswer().toUpperCase() + ": " + ex.getMessage());
+            getPlugin().getLogger().log(Level.WARNING, "Unable to set chat reaction answer for BLOCK_PLACE: " + implementation.getAnswer().toUpperCase() + ": " + ex.getMessage());
         }
     }
 
     @Override public boolean attempt(Player who, String message, Event event) {
-        BlockBreakEvent event1 = (BlockBreakEvent) event;
-        return event1.getPlayer().equals(who) && toBreak.contains(event1.getBlock().getType());
+        BlockPlaceEvent event1 = (BlockPlaceEvent) event;
+        return event1.getPlayer().equals(who) && toPlace.contains(event1.getBlock().getType());
     }
 
     @Override public String getMessage() {

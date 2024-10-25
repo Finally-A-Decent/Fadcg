@@ -3,11 +3,13 @@ package info.asdev.fadcg.managers;
 import info.asdev.fadcg.Fadcg;
 import info.asdev.fadcg.chat.ReactionImpl;
 import info.asdev.fadcg.chat.ReactionMode;
+import info.asdev.fadcg.events.PlayerBarterEvent;
 import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import info.asdev.fadcg.managers.reaction.Reward;
 import info.asdev.fadcg.utils.Job;
 import info.asdev.fadcg.utils.Text;
 import info.asdev.fadcg.utils.Util;
+import io.papermc.paper.event.player.PlayerTradeEvent;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,16 +18,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.Async;
 
 import java.text.DecimalFormat;
 import java.time.Duration;
@@ -118,7 +117,7 @@ public class ChatManager {
                 if (running) {
                     timeout();
 
-                    timeoutMessage = Text.getMessage("chat-reaction.reaction-expired", false, active.getActiveImplementation().getAnswer());
+                    timeoutMessage = active.getExpiryMessage();
                     Bukkit.getOnlinePlayers().forEach(player -> {
                         Text.sendNoFetch(player, timeoutMessage);
                     });
@@ -134,21 +133,45 @@ public class ChatManager {
         startTime = System.currentTimeMillis();
     }
 
-    @Deprecated
-    public void processChatMessage(Player who, String message) {
-        if (!running || active == null) {
-            return;
-        }
-        if (!ReactionMode.CHAT_MESSAGE.equals(active.getMode())) {
+    public void runSpecificReaction(ReactionCategory category, ReactionImpl implementation, boolean force) {
+        if ((running || Bukkit.getOnlinePlayers().size() < minPlayers)) {
             return;
         }
 
-        boolean correct = active.attempt(who, message, null);
-        if (!correct) {
+        running = true;
+        active = category;
+        active.setActiveImplementation(implementation);
+        category.init(implementation);
+
+        if (active == null) {
             return;
         }
 
-        onCorrectAnswer(who);
+        active.init();
+        String message = Text.getMessage("chat-reaction.format", true, active.getMessage());
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            Text.sendNoFetch(player, isCenterFormat() ? Util.getMultilineCenteredMessage(message) : message);
+        });
+
+        timeoutRunnable = new BukkitRunnable() {
+            @Override public void run() {
+                if (running) {
+                    timeout();
+
+                    timeoutMessage = active.getExpiryMessage();
+                    Bukkit.getOnlinePlayers().forEach(player -> {
+                        Text.sendNoFetch(player, timeoutMessage);
+                    });
+                }
+            }
+        };
+
+        double mspt = 1000;
+        float tickRate = Bukkit.getServerTickManager().getTickRate();
+        mspt = 1000d / tickRate;
+
+        timeoutRunnable.runTaskLater(Fadcg.getInstance(), (long) (timeout / mspt));
+        startTime = System.currentTimeMillis();
     }
 
     @SuppressWarnings("deprecation")
@@ -186,6 +209,21 @@ public class ChatManager {
             }
             case USE_ITEM -> {
                 PlayerItemConsumeEvent ev = (PlayerItemConsumeEvent) event;
+                who = ev.getPlayer();
+                result = active.attempt(ev.getPlayer(), null, event);
+            }
+            case KILL_MOB -> {
+                EntityDeathEvent ev = (EntityDeathEvent) event;
+                who = ev.getEntity().getKiller();
+                result = active.attempt(ev.getEntity().getKiller(), null, event);
+            }
+            case VILLAGER_TRADE -> {
+                PlayerTradeEvent ev = (PlayerTradeEvent) event;
+                who = ev.getPlayer();
+                result = active.attempt(ev.getPlayer(), null, event);
+            }
+            case PIGLIN_BARTER -> {
+                PlayerBarterEvent ev = (PlayerBarterEvent) event;
                 who = ev.getPlayer();
                 result = active.attempt(ev.getPlayer(), null, event);
             }

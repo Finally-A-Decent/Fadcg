@@ -34,7 +34,7 @@ public abstract class ReactionCategory {
 
     private final List<ReactionImpl> implementations = new ArrayList<>();
     private FileConfiguration config;
-    private ReactionImpl activeImplementation;
+    @Setter private ReactionImpl activeImplementation;
     private ChatManager chatManager;
 
     @NotNull private final Plugin plugin;
@@ -101,9 +101,31 @@ public abstract class ReactionCategory {
         activeImplementation = implementations.get(ChatManager.getInstance().getRandom().nextInt(implementations.size()));
     }
 
-    public abstract void init();
+    public ReactionImpl getImplementationById(String id) {
+        for (ReactionImpl implementation : implementations) {
+            if (implementation.getId().equalsIgnoreCase(id)) return implementation;
+        }
+
+        return null;
+    }
+
+    public ReactionImpl getImplementationByPath(String path) {
+        for (ReactionImpl implementation : implementations) {
+            if (implementation.getPath().equalsIgnoreCase(path)) return implementation;
+        }
+
+        return null;
+    }
+
+    public final void init() {
+        init(activeImplementation);
+    }
+
+    public abstract void init(ReactionImpl implementation);
 
     public abstract boolean attempt(Player who, String message, @Nullable Event event);
 
     public abstract String getMessage();
+
+    public abstract String getExpiryMessage();
 }

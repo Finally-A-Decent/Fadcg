@@ -6,5 +6,9 @@ public enum ReactionMode {
     BLOCK_PLACE,
 
     CRAFT_ITEM,
-    USE_ITEM;
+    USE_ITEM,
+
+    KILL_MOB,
+    VILLAGER_TRADE,
+    PIGLIN_BARTER;
 }
