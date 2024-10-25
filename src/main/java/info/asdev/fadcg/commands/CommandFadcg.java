@@ -59,6 +59,13 @@ public class CommandFadcg implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (action.equals("stop")) {
+            if (ChatManager.getInstance().isRunning()) {
+                ChatManager.getInstance().getTimeoutRunnable().run();
+            }
+            return true;
+        }
+
         if (action.equals("run-now") || action.equals("force")) {
             if (ChatManager.getInstance().isRunning()) {
                 Text.send(sender, "commands.errors.requirements-not-met");

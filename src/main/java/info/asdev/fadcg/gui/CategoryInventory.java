@@ -32,12 +32,14 @@ public class CategoryInventory extends FastInv implements Gui {
         categories = ReactionCategory.getInstances();
         ReactionCategory[] values = categories.values().toArray(new ReactionCategory[0]);
 
+        fillBorders();
+
         for (int i = 0; i < categories.size(); i++) {
             boolean enabled = !values[i].isDisabled();
             ItemBuilder builder = new ItemBuilder(enabled ? Material.LIME_CONCRETE : Material.RED_CONCRETE);
             builder.name(Text.legacyMessage(String.join("", enabled ? "&a" : "&c", Util.capitalizeFirst(values[i].getId()).replace("_", " "))));
 
-            addItem(builder.build(), this::openCategory);
+            addTryAvoidBorder(i, builder.build(), this::openCategory);
         }
     }
 

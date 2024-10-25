@@ -8,7 +8,7 @@ public class GuiManager {
     private CategoryInventory categoriesInv;
 
     public void init() {
-        categoriesInv = new CategoryInventory(36, "Reaction Categories");
+        categoriesInv = new CategoryInventory(54, "Reaction Categories");
         categoriesInv.init();
     }
 

@@ -45,7 +45,7 @@ public class ChatManager {
     private Reward reward;
     private Job job;
     private ReactionCategory active;
-    private BukkitRunnable timeoutRunnable;
+    @Getter private BukkitRunnable timeoutRunnable;
     private Pattern spacesPattern = Pattern.compile(" ");
     private String timeoutMessage;
 
@@ -222,11 +222,11 @@ public class ChatManager {
                 who = ev.getPlayer();
                 result = active.attempt(ev.getPlayer(), null, event);
             }
-            case PIGLIN_BARTER -> {
-                PlayerBarterEvent ev = (PlayerBarterEvent) event;
-                who = ev.getPlayer();
-                result = active.attempt(ev.getPlayer(), null, event);
-            }
+//            case PIGLIN_BARTER -> {
+//                PlayerBarterEvent ev = (PlayerBarterEvent) event;
+//                who = ev.getPlayer();
+//                result = active.attempt(ev.getPlayer(), null, event);
+//            }
         }
 
         if (!result) {

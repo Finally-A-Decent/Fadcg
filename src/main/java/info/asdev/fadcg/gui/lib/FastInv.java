@@ -1,8 +1,10 @@
 package info.asdev.fadcg.gui.lib;
 
+import info.asdev.fadcg.utils.Text;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -11,6 +13,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -232,6 +235,27 @@ public class FastInv implements InventoryHolder {
             if (clickConsumer != null) {
                 clickConsumer.accept(new GuiClickEvent((Player) e.getWhoClicked(), slot, e.getType()));
             }
+        }
+    }
+
+    public void fillBorders() {
+        fillBorders(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name(Text.legacyMessage("&8 ")).build());
+    }
+
+    public void fillBorders(ItemStack item) {
+        for (int border : getBorders()) {
+            setItem(border, item);
+        }
+    }
+
+    public void addTryAvoidBorder(int slot, ItemStack item, Consumer<GuiClickEvent> handler) {
+        List<Integer> borders = new ArrayList<>();
+        for (int border : getBorders()) {
+            borders.add(border);
+        }
+
+        if (borders.contains(slot) || getInventory().getItem(slot) != null) {
+            setItem((slot % 8 == 0 ? slot + 2 : slot + 1) + 9, item, handler);
         }
     }
 }

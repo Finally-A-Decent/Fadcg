@@ -39,7 +39,7 @@ public class ReactionManager {
                 "kill_mob",
                 "craft_item",
                 "villager_trade",
-                "piglin_barter"
+                //"piglin_barter"
         };
 
         Stream.of(ids).forEach(id -> {
@@ -63,7 +63,7 @@ public class ReactionManager {
             case "craft_item" -> new ReactionCraftItem(plugin, id, file);
             case "kill_mob" -> new ReactionKillMob(plugin, id, file);
             case "villager_trade" -> new ReactionTrade(plugin, id, file);
-            case "piglin_barter" -> new ReactionBarter(plugin, id, file);
+            //case "piglin_barter" -> new ReactionBarter(plugin, id, file);
             default -> {}
         }
     }

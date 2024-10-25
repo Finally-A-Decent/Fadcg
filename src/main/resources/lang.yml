@@ -32,7 +32,7 @@ chat-reaction:
   # It will be auto resolved to the corresponding reaction message in the 'reactions' section below.
   format:
     - " "
-    - "&9&lCHAT GAME"
+    - "&#9555ff&lCHAT GAME"
     - "{0}"
     - " "
 # When setting these, make sure you include {0}, as this is the actual question contents.

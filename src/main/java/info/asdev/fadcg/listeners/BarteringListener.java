@@ -79,7 +79,7 @@ public class BarteringListener implements Listener {
             return;
         }
 
-        bartering.put(uuid, (Piglin) event.getEntity());
+        bartering.putIfAbsent(uuid, (Piglin) event.getEntity());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

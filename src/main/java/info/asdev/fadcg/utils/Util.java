@@ -1,8 +1,14 @@
 package info.asdev.fadcg.utils;
 
 import com.google.common.collect.Lists;
+import lombok.AllArgsConstructor;
 import lombok.experimental.UtilityClass;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 
@@ -50,52 +56,14 @@ public class Util {
 
         StringBuilder builder = new StringBuilder();
         for (String s : message.split("\n")) {
-            builder.append("\n").append(
-                    Text.legacyMessage(getCenteredMessage(s))
-            );
+            builder.append("\n").append(altCenter(s + "§r"));
         }
 
         return builder.substring(1);
     }
 
-    private final static int CENTER_PX = 154;
-    public static String getCenteredMessage(String message) {
-        if (message == null || message.isEmpty()) return "";
 
-        int messagePxSize = 0;
-        boolean previousCode = false;
-        boolean isBold = false;
 
-        for (char c : message.toCharArray()) {
-            if (c == '§') {
-                previousCode = true;
-                continue;
-            }
-            if (previousCode) {
-                previousCode = false;
-                if (c == 'l' || c == 'L') {
-                    isBold = true;
-                    continue;
-                }
-                isBold = false;
-            } else {
-                DefaultFontInfo dFI = DefaultFontInfo.getDefaultFontInfo(c);
-                messagePxSize += isBold ? dFI.getBoldLength() : dFI.getLength();
-                messagePxSize++;
-            }
-        }
-
-        int halvedMessageSize = messagePxSize / 2;
-        int toCompensate = CENTER_PX - halvedMessageSize;
-        int spaceLength = DefaultFontInfo.SPACE.getLength() + 1;
-        int compensated = 0;
-        StringBuilder sb = new StringBuilder();
-        while (compensated < toCompensate) {
-            sb.append(" ");
-            compensated += spaceLength;
-        }
-        return sb.toString() + message;
-    }
 
     public int getOnlineSizeExcluding(Player... players) {
         if (players.length < 1) {
@@ -142,5 +110,42 @@ public class Util {
 
         surrounding.addFirst(chunk);
         return surrounding.toArray(new Chunk[0]);
+    }
+
+
+    private final static int CENTER_PX = 154;
+    public String altCenter(String message) {
+        if (message == null || message.equals("")) return "";
+
+        message = Text.legacyMessage(message);
+
+        int messagePxSize = 0;
+        boolean previousCode = false;
+        boolean isBold = false;
+
+        for (char c : message.toCharArray()) {
+            if (c == '§') {
+                previousCode = true;
+            } else if (previousCode) {
+                previousCode = false;
+                isBold = c == 'l' || c == 'L';
+            } else {
+                DefaultFontInfo dFI = DefaultFontInfo.getDefaultFontInfo(c);
+                messagePxSize += isBold ? dFI.getBoldLength() : dFI.getLength();
+                messagePxSize++;
+            }
+        }
+
+        int halvedMessageSize = messagePxSize / 2;
+        int toCompensate = CENTER_PX - halvedMessageSize;
+        int spaceLength = DefaultFontInfo.SPACE.getLength() + 1;
+        int compensated = 0;
+        StringBuilder sb = new StringBuilder();
+        while (compensated < toCompensate) {
+            sb.append(" ");
+            compensated += spaceLength;
+        }
+
+        return sb + message;
     }
 }
