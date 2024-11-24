@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,6 +20,8 @@ public final class Text {
     private final Pattern FINAL_LEGACY_PATTERN = Pattern.compile("&#(\\w{5}[0-9a-fA-F])");
     private static final Pattern LEGACY_HEX_PATTERN = Pattern.compile("&#[a-fA-F0-9]{6}");
     private static final Pattern MODERN_HEX_PATTERN = Pattern.compile("<#[a-fA-F0-9]{6}>");
+
+    Random random = new Random();
 
     /**
      * Converts legacy colour codes to MiniMessage.
@@ -193,5 +196,88 @@ public final class Text {
         }
 
         return message;
+    }
+
+
+    public String scramble(String original) {
+        if (!original.contains(" ")) {
+            return scramble2(original);
+        }
+
+        StringBuilder builder = new StringBuilder();
+        String[] parts = original.split(" ");
+
+        for (String part : parts) {
+            builder.append(" ").append(scramble2(part));
+        }
+
+        return builder.substring(1);
+    }
+
+    private String scramble2(String in) {
+        char[] characters = in.toCharArray();
+
+        for (int i = characters.length - 1; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+            char temp = characters[i];
+
+            characters[i] = characters[j];
+            characters[j] = temp;
+        }
+
+        return new String(characters);
+    }
+
+    public String capitalizeFirst(String message) {
+        return String.join("", message.substring(0, 1).toUpperCase(), message.substring(1));
+    }
+
+    public static String getMultilineCenteredMessage(String message) {
+        if (message == null || message.isEmpty()) {
+            return message;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (String s : message.split("\n")) {
+            builder.append("\n").append(altCenter(s + "§r"));
+        }
+
+        return builder.substring(1);
+    }
+
+    private final int CENTER_PX = 154;
+    public String altCenter(String message) {
+        if (message == null || message.equals("")) return "";
+
+        message = Text.legacyMessage(message);
+
+        int messagePxSize = 0;
+        boolean previousCode = false;
+        boolean isBold = false;
+
+        for (char c : message.toCharArray()) {
+            if (c == '§') {
+                previousCode = true;
+            } else if (previousCode) {
+                previousCode = false;
+                isBold = c == 'l' || c == 'L';
+            } else {
+                DefaultFontInfo dFI = DefaultFontInfo.getDefaultFontInfo(c);
+                messagePxSize += isBold ? dFI.getBoldLength() : dFI.getLength();
+                messagePxSize++;
+            }
+        }
+
+        int halvedMessageSize = messagePxSize / 2;
+        int toCompensate = CENTER_PX - halvedMessageSize;
+        int spaceLength = DefaultFontInfo.SPACE.getLength() + 1;
+        int compensated = 0;
+        StringBuilder sb = new StringBuilder();
+        while (compensated < toCompensate) {
+            sb.append(" ");
+            compensated += spaceLength;
+        }
+
+        return sb + message;
     }
 }

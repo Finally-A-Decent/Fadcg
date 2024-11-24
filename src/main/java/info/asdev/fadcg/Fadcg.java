@@ -1,10 +1,9 @@
 package info.asdev.fadcg;
 
-import info.asdev.fadcg.listeners.BarteringListener;
-import info.asdev.fadcg.managers.ChatManager;
-import info.asdev.fadcg.commands.CommandFadcg;
-import info.asdev.fadcg.gui.GuiManager;
+import info.asdev.aslib.commands.CommandManager;
+import info.asdev.fadcg.commands.fadcg.CommandFadcg;
 import info.asdev.fadcg.listeners.ChatListener;
+import info.asdev.fadcg.managers.ChatManager;
 import info.asdev.fadcg.managers.FastInvManager;
 import info.asdev.fadcg.managers.ReactionManager;
 import info.asdev.fadcg.managers.RewardManager;
@@ -33,18 +32,18 @@ public final class Fadcg extends JavaPlugin {
         saveDefaultConfig();
 
         Stream.of(
-                new ChatListener(),
-                new BarteringListener()
+                new ChatListener()
+                //new BarteringListener()
         ).forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, this));
-        FastInvManager.register(this);
 
-        //ReactionConfigManager.init();
+        FastInvManager.register(this);
         ReactionManager.init();
         RewardManager.init();
         ChatManager.getInstance().init();
-        GuiManager.init();
 
-        getCommand("fadcg").setExecutor(new CommandFadcg());
+        Stream.of(
+                new CommandFadcg()
+        ).forEach(CommandManager.getInstance()::registerCommand);
 
         papiInstalled = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
         Bukkit.getConsoleSender().sendMessage(Text.legacyMessage("""

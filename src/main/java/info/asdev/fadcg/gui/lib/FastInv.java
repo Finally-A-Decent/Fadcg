@@ -242,20 +242,11 @@ public class FastInv implements InventoryHolder {
         fillBorders(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name(Text.legacyMessage("&8 ")).build());
     }
 
+    List<Integer> borders = new ArrayList<>();
     public void fillBorders(ItemStack item) {
         for (int border : getBorders()) {
             setItem(border, item);
-        }
-    }
-
-    public void addTryAvoidBorder(int slot, ItemStack item, Consumer<GuiClickEvent> handler) {
-        List<Integer> borders = new ArrayList<>();
-        for (int border : getBorders()) {
             borders.add(border);
-        }
-
-        if (borders.contains(slot) || getInventory().getItem(slot) != null) {
-            setItem((slot % 8 == 0 ? slot + 2 : slot + 1) + 9, item, handler);
         }
     }
 }

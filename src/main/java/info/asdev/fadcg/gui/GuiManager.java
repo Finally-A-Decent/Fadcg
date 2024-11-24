@@ -7,14 +7,8 @@ import org.bukkit.entity.Player;
 public class GuiManager {
     private CategoryInventory categoriesInv;
 
-    public void init() {
-        categoriesInv = new CategoryInventory(54, "Reaction Categories");
-        categoriesInv.init();
-    }
-
    public void openCategoriesInventory(Player who) {
+        categoriesInv = new CategoryInventory(54, "Categories", who);
         categoriesInv.open(who);
    }
-
-
 }

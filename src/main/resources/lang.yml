@@ -62,3 +62,9 @@ commands:
     category-not-found: "&c{0}&7 is not a valid reaction category."
     category-disabled: "&c{0}&7 reactions are disabled."
     id-not-found: "&c{0}&7 was not found in the &c{1}&7 category."
+
+gui:
+  close: "&cClose"
+  pagination:
+    previous: "&8&l« &cPrev Page"
+    next: "&8&l» &cNext Page"

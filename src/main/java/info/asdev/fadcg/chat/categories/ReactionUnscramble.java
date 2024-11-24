@@ -22,7 +22,7 @@ public class ReactionUnscramble extends ReactionCategory {
 
     @Override public void init(ReactionImpl implementation) {
         answer = implementation.getAnswer();
-        question = Util.scramble(answer);
+        question = Text.scramble(answer);
     }
 
     @Override public boolean attempt(Player who, String message, Event event) {

@@ -26,34 +26,15 @@ public class ReactionBlockBreak extends ReactionCategory {
 
     @Override public void init(ReactionImpl implementation) {
         toBreak = new ArrayList<>();
-        if (implementation.hasMultipleAnswers()) {
-            List<String> materialNames = implementation.getAnswers();
+        List<String> blocks = implementation.hasMultipleAnswers() ? implementation.getAnswers() : List.of(implementation.getAnswer());
 
-            for (String materialName : materialNames) {
-                try {
-                    Material material = Material.valueOf(materialName.toUpperCase());
-                    if (!material.isBlock()) {
-                        throw new IllegalArgumentException(materialName + " is not a valid block.");
-                    }
-
-                    toBreak.add(material);
-                } catch (EnumConstantNotPresentException | IllegalArgumentException ex) {
-                    getPlugin().getLogger().log(Level.WARNING, "Unable to add chat reaction answer for BLOCK_BREAK: " + implementation.getAnswer().toUpperCase() + ": " + ex.getMessage());
-                }
+        for (String block : blocks) {
+            try {
+                Material material = Material.valueOf(block.toUpperCase());
+                toBreak.add(material);
+            } catch (EnumConstantNotPresentException | IllegalArgumentException ex) {
+                getPlugin().getLogger().log(Level.WARNING, "Unable to add chat reaction answer for VILLAGER_TRADE: " + implementation.getAnswer().toUpperCase() + ": " + ex.getMessage());
             }
-
-            return;
-        }
-
-        try {
-            Material material = Material.valueOf(implementation.getAnswer().toUpperCase());
-            if (!material.isBlock()) {
-                throw new IllegalArgumentException(implementation.getAnswer() + " is not a valid block.");
-            }
-
-            toBreak.add(material);
-        } catch (EnumConstantNotPresentException | IllegalArgumentException ex) {
-            getPlugin().getLogger().log(Level.WARNING, "Unable to set chat reaction answer for BLOCK_BREAK: " + implementation.getAnswer().toUpperCase() + ": " + ex.getMessage());
         }
     }
 

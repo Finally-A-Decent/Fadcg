@@ -1,9 +1,10 @@
 plugins {
     id 'java'
+    id 'io.github.goooler.shadow' version '8.1.7'
 }
 
 group = 'info.asdev'
-version = '1.0-SNAPSHOT'
+version = '1.0'
 
 repositories {
     mavenCentral()
@@ -18,15 +19,26 @@ repositories {
     maven {
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
+    maven {
+        name = "dxtrusReleases"
+        url = "https://maven.asdev.info/releases"
+
+
+        credentials(PasswordCredentials)
+        authentication {
+            basic(BasicAuthentication)
+        }
+    }
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
 
     annotationProcessor "org.projectlombok:lombok:1.18.30"
     compileOnly "org.projectlombok:lombok:1.18.30"
-
     compileOnly 'me.clip:placeholderapi:2.11.6'
+
+    implementation "info.asdev:aslib:1.0.13"
 }
 
 def targetJavaVersion = 21
@@ -55,3 +67,10 @@ processResources {
         expand props
     }
 }
+
+shadowJar {
+    destinationDirectory.set(file("$rootDir/build/shadow/"))
+    archiveClassifier.set('')
+}
+
+jar.dependsOn shadowJar

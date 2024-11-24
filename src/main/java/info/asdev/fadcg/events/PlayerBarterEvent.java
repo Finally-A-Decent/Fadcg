@@ -9,6 +9,10 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * THIS EVENT IS NOT YET CALLED
+ * @deprecated Not called yet.*/
+@Deprecated
 public class PlayerBarterEvent extends PlayerEvent {
     private static final HandlerList handlers = new HandlerList();
 

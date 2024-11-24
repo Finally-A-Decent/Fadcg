@@ -107,9 +107,10 @@ public class ChatManager {
         active.init();
 
         String message = Text.getMessage("chat-reaction.format", true, active.getMessage());
+        final String message2 = isCenterFormat() ? Text.getMultilineCenteredMessage(message) : message;
 
         Bukkit.getOnlinePlayers().forEach(player -> {
-            Text.sendNoFetch(player, isCenterFormat() ? Util.getMultilineCenteredMessage(message) : message);
+            Text.sendNoFetch(player, message2);
         });
 
         timeoutRunnable = new BukkitRunnable() {
@@ -150,7 +151,7 @@ public class ChatManager {
         active.init();
         String message = Text.getMessage("chat-reaction.format", true, active.getMessage());
         Bukkit.getOnlinePlayers().forEach(player -> {
-            Text.sendNoFetch(player, isCenterFormat() ? Util.getMultilineCenteredMessage(message) : message);
+            Text.sendNoFetch(player, isCenterFormat() ? Text.getMultilineCenteredMessage(message) : message);
         });
 
         timeoutRunnable = new BukkitRunnable() {

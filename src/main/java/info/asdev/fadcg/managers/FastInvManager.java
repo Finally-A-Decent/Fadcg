@@ -49,9 +49,17 @@ public final class FastInvManager {
      * Close all open FastInv inventories.
      */
     public static void closeAll(Plugin plugin) {
-        for (Player player : Bukkit.getOnlinePlayers().stream().filter(p -> p.getOpenInventory().getTopInventory().getHolder() instanceof FastInv).toList()) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!(player.getOpenInventory().getTopInventory().getHolder() instanceof FastInv inv)) {
+                continue;
+            }
+
             player.closeInventory();
         }
+
+//        for (Player player : Bukkit.getOnlinePlayers().stream().filter(p -> p.getOpenInventory().getTopInventory().getHolder() instanceof FastInv).toList()) {
+//            player.closeInventory();
+//        }
     }
 
     public static final class InventoryListener implements Listener {

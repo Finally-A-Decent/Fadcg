@@ -18,14 +18,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-public class CommandFadcg implements CommandExecutor, TabCompleter {
-
+@Deprecated(forRemoval = true)
+public class OldCommandFadcg implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length < 1 || args[0].equalsIgnoreCase("about")) {
@@ -49,7 +48,6 @@ public class CommandFadcg implements CommandExecutor, TabCompleter {
                 ReactionManager.init();
                 RewardManager.init();
                 ChatManager.getInstance().init();
-                GuiManager.init();
 
                 Text.send(sender, "commands.reload.success");
             } catch (Exception ex) {

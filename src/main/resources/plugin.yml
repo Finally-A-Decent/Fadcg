@@ -4,9 +4,3 @@ main: info.asdev.fadcg.Fadcg
 api-version: '1.16'
 authors: [ASDEVJava, Preva1l]
 softdepend: [PlaceholderAPI]
-
-commands:
-  fadcg:
-    aliases: [chatreactions, creact, finallyadecentchatgames, reaction, chatgames]
-    usage: /<command> [args]
-    description: Control for FADCG
