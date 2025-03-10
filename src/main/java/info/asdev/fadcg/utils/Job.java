@@ -24,7 +24,8 @@ public abstract class Job {
     private final Duration interval;
     private boolean silent = true;
     private ScheduledFuture<?> future;
-    @Getter private boolean active;
+    @Getter
+    private boolean active;
 
     public Job(String name, Duration interval, boolean silent) {
         this.name = name;

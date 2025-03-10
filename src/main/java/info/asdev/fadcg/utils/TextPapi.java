@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 @UtilityClass
 public class TextPapi {
-        public String setPlaceholders(Player who, String message) {
-            return PlaceholderAPI.setPlaceholders(who, message);
-        }
+    public String setPlaceholders(Player who, String message) {
+        return PlaceholderAPI.setPlaceholders(who, message);
+    }
 }

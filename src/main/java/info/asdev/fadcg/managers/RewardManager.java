@@ -20,20 +20,17 @@ import java.util.Set;
 
 @UtilityClass
 public class RewardManager {
-    private Map<String, Reward> rewards = new HashMap<>();
-    private Fadcg plugin;
-    private File file;
+    private final Map<String, Reward> rewards = new HashMap<>();
     private FileConfiguration config;
-    private InputStream defaults;
 
     private RandomSelector<Reward> rewardSelector;
 
     public void init() {
-        plugin = Fadcg.getInstance();
+        Fadcg plugin = Fadcg.getInstance();
 
         try {
-            file = new File(plugin.getDataFolder(), "rewards.yml");
-            defaults = plugin.getResource("rewards.yml");
+            File file = new File(plugin.getDataFolder(), "rewards.yml");
+            InputStream defaults = plugin.getResource("rewards.yml");
 
             if (!file.exists()) {
                 plugin.saveResource("rewards.yml", false);

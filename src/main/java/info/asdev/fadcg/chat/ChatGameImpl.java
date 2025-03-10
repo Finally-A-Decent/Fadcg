@@ -9,12 +9,12 @@ import java.util.List;
 
 @Getter
 public class ChatGameImpl {
-    private String id;
-    private String path;
-    private String type;
-    private String question;
+    private final String id;
+    private final String path;
+    private final String type;
+    private final String question;
     @Setter private List<String> answers;
-    private String reward;
+    private final String reward;
 
     private String answer;
 

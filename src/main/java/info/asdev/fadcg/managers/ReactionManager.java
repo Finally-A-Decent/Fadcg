@@ -5,13 +5,11 @@ import info.asdev.fadcg.chat.categories.*;
 import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
-import org.bukkit.event.entity.PiglinBarterEvent;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.jar.JarEntry;
 import java.util.stream.Stream;
 
 @UtilityClass
@@ -27,8 +25,7 @@ public class ReactionManager {
         if (!configFolder.exists()) {
             configFolder.mkdir();
         }
-
-        String[] ids = new String[] {
+        Stream.of(
                 "finish_phrase",
                 "reverse",
                 "solve",
@@ -38,11 +35,9 @@ public class ReactionManager {
                 "block_place",
                 "kill_mob",
                 "craft_item",
-                "villager_trade",
+                "villager_trade"
                 //"piglin_barter"
-        };
-
-        Stream.of(ids).forEach(id -> {
+        ).forEach(id -> {
             File file = new File(configFolder, String.join("", id, ".yml"));
             registerInternalReactionType(file.getName().substring(0, file.getName().length() - 4).toLowerCase(), file);
         });

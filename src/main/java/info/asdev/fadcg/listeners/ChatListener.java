@@ -1,8 +1,6 @@
 package info.asdev.fadcg.listeners;
 
-import info.asdev.fadcg.chat.ChatGameType;
 import info.asdev.fadcg.managers.ChatManager;
-import info.asdev.fadcg.utils.Text;
 import io.papermc.paper.event.player.PlayerTradeEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,7 +11,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 @SuppressWarnings("deprecation")
@@ -24,7 +21,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        ChatManager.getInstance().onPlayerEvent(ChatGameType.CHAT_MESSAGE, event);
+        ChatManager.getInstance().onPlayerEvent(event);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -33,7 +30,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        ChatManager.getInstance().onPlayerEvent(ChatGameType.BLOCK_BREAK, event);
+        ChatManager.getInstance().onPlayerEvent(event);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -42,7 +39,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        ChatManager.getInstance().onPlayerEvent(ChatGameType.BLOCK_PLACE, event);
+        ChatManager.getInstance().onPlayerEvent(event);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -51,7 +48,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        ChatManager.getInstance().onPlayerEvent(ChatGameType.CRAFT_ITEM, event);
+        ChatManager.getInstance().onPlayerEvent(event);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -60,7 +57,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        ChatManager.getInstance().onPlayerEvent(ChatGameType.USE_ITEM, event);
+        ChatManager.getInstance().onPlayerEvent(event);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -72,7 +69,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        ChatManager.getInstance().onPlayerEvent(ChatGameType.KILL_MOB, event);
+        ChatManager.getInstance().onPlayerEvent(event);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -81,22 +78,11 @@ public class ChatListener implements Listener {
             return;
         }
 
-        ChatManager.getInstance().onPlayerEvent(ChatGameType.VILLAGER_TRADE, event);
+        ChatManager.getInstance().onPlayerEvent(event);
     }
-
-
-
-
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
         ChatManager.getInstance().onPlayerLeave(event);
-    }
-    // hi prevail
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        if (event.getPlayer().getUniqueId().toString().equalsIgnoreCase("26decebc-0c64-453f-98c5-939c42d17a08")) {
-            Text.sendNoFetch(event.getPlayer(), "&c&l(!) &7Update checking for Fadcg is disabled");
-        }
     }
 }

@@ -11,28 +11,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class CategoryInventory extends PaginatedFastInv {
-    private Map<String, ReactionCategory> categories;
-    List<ItemStack> categoryItems = new ArrayList<>();
-    private ItemStack[] pagination;
+    private final ItemStack[] pagination;
 
     protected CategoryInventory(int size, @NotNull String title, @NotNull Player player) {
         super(size, title, player);
-
-        categories = ReactionCategory.getInstances();
-        ReactionCategory[] values = categories.values().toArray(new ReactionCategory[0]);
-
-        for (int i = 0; i < categories.size(); i++) {
-            boolean enabled = !values[i].isDisabled();
-            ItemBuilder builder = new ItemBuilder(enabled ? Material.LIME_CONCRETE : Material.RED_CONCRETE);
-            builder.name(Text.legacyMessage(String.join("", enabled ? "&a" : "&c", Text.capitalizeFirst(values[i].getId()).replace("_", " "))));
-
-            categoryItems.add(builder.build());
-        }
 
         pagination = new ItemStack[3];
         pagination[0] = new ItemBuilder(Material.ARROW)
@@ -50,16 +35,31 @@ public class CategoryInventory extends PaginatedFastInv {
         addPaginationControls();
     }
 
+    @Override
+    protected void paginationEmpty() {
+
+    }
+
     private void openCategory(GuiClickEvent event) {
         event.getPlayer().sendMessage(String.valueOf((char)event.getSlot()));
     }
 
-    @Override protected void fillPaginationItems() {
-        categoryItems.forEach(item -> addPaginationItem(new PaginatedItem(item, this::openCategory)));
+    @Override
+    protected void fillPaginationItems() {
+        Map<String, ReactionCategory> categories = ReactionCategory.getInstances();
+        ReactionCategory[] values = categories.values().toArray(new ReactionCategory[0]);
 
+        for (int i = 0; i < categories.size(); i++) {
+            boolean enabled = !values[i].isDisabled();
+            ItemBuilder builder = new ItemBuilder(enabled ? Material.LIME_CONCRETE : Material.RED_CONCRETE);
+            builder.name(Text.legacyMessage(String.join("", enabled ? "&a" : "&c", Text.capitalizeFirst(values[i].getId()).replace("_", " "))));
+
+            addPaginationItem(new PaginatedItem(builder.build(), this::openCategory));
+        }
     }
 
-    @Override protected void addPaginationControls() {
+    @Override
+    protected void addPaginationControls() {
         // 39, 40, 41
         setItem(39, pagination[0], event -> previousPage());
         setItem(40, pagination[2], event -> player.closeInventory());

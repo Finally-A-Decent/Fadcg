@@ -1,10 +1,8 @@
 package info.asdev.fadcg.chat.categories;
 
 import info.asdev.fadcg.chat.ChatGameImpl;
-import info.asdev.fadcg.chat.ChatGameType;
 import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import info.asdev.fadcg.utils.Text;
-import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -19,7 +17,6 @@ import java.util.logging.Level;
 
 public class ReactionCraftItem extends ReactionCategory {
     private List<Material> toCraft;
-    @Getter private final ChatGameType mode = ChatGameType.CRAFT_ITEM;
 
     public ReactionCraftItem(Plugin plugin, String id, File file) {
         super(plugin, id, file);

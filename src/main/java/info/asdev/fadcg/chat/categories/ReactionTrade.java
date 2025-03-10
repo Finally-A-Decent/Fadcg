@@ -1,11 +1,9 @@
 package info.asdev.fadcg.chat.categories;
 
 import info.asdev.fadcg.chat.ChatGameImpl;
-import info.asdev.fadcg.chat.ChatGameType;
 import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import info.asdev.fadcg.utils.Text;
 import io.papermc.paper.event.player.PlayerTradeEvent;
-import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -19,7 +17,6 @@ import java.util.logging.Level;
 
 public class ReactionTrade extends ReactionCategory {
     private List<Material> toTrade;
-    @Getter private final ChatGameType mode = ChatGameType.VILLAGER_TRADE;
 
     public ReactionTrade(Plugin plugin, String id, File file) {
         super(plugin, id, file);

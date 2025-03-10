@@ -1,11 +1,7 @@
 package info.asdev.fadcg.utils;
 
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static java.util.Objects.requireNonNull;
-import static java.util.Spliterator.IMMUTABLE;
-import static java.util.Spliterator.ORDERED;
-
+import javax.annotation.concurrent.ThreadSafe;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
@@ -15,7 +11,10 @@ import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import javax.annotation.concurrent.ThreadSafe;
+import static com.google.common.base.Preconditions.checkArgument;
+import static java.util.Objects.requireNonNull;
+import static java.util.Spliterator.IMMUTABLE;
+import static java.util.Spliterator.ORDERED;
 
 /**
  * A tool to randomly select elements from collections.
@@ -38,9 +37,8 @@ import javax.annotation.concurrent.ThreadSafe;
  * }
  * </code></pre>
  *
- *
- * @author Olivier Grégoire
  * @param <T>
+ * @author Olivier Grégoire
  */
 @ThreadSafe
 public final class RandomSelector<T> {
@@ -81,7 +79,7 @@ public final class RandomSelector<T> {
      * @param weighter
      * @return
      * @throws IllegalArgumentException if <tt>elements</tt> is empty or if <tt>weighter</tt> returns
-     * a negative value or <tt>0</tt>.
+     *                                  a negative value or <tt>0</tt>.
      */
     public static <T> RandomSelector<T> weighted(
             final Collection<T> elements,

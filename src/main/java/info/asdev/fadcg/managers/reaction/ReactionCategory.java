@@ -2,7 +2,6 @@ package info.asdev.fadcg.managers.reaction;
 
 import info.asdev.fadcg.Fadcg;
 import info.asdev.fadcg.chat.ChatGameImpl;
-import info.asdev.fadcg.chat.ChatGameType;
 import info.asdev.fadcg.managers.ChatManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,8 +42,6 @@ public abstract class ReactionCategory {
     @Nullable private final InputStream defaults;
     @Setter private boolean disabled;
 
-    private ChatGameType mode = ChatGameType.CHAT_MESSAGE;
-
     public ReactionCategory(Plugin plugin, String id, File file) {
         this.plugin = Objects.requireNonNull(plugin, "Plugin cannot be null.");
         this.id = Objects.requireNonNull(id, "ID cannot be null");
@@ -56,6 +54,10 @@ public abstract class ReactionCategory {
         loadConfig();
         loadImplementations();
         instances.putIfAbsent(id, this);
+    }
+
+    public boolean acceptEvent(Event event) {
+        return event.getClass().equals(AsyncPlayerChatEvent.class);
     }
 
     private void loadConfig() {
