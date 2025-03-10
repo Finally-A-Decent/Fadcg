@@ -1,6 +1,6 @@
 package info.asdev.fadcg.chat;
 
-public enum ReactionMode {
+public enum ChatGameType {
     CHAT_MESSAGE,
     BLOCK_BREAK,
     BLOCK_PLACE,

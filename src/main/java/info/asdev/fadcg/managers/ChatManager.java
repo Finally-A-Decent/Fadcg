@@ -1,9 +1,8 @@
 package info.asdev.fadcg.managers;
 
 import info.asdev.fadcg.Fadcg;
-import info.asdev.fadcg.chat.ReactionImpl;
-import info.asdev.fadcg.chat.ReactionMode;
-import info.asdev.fadcg.events.PlayerBarterEvent;
+import info.asdev.fadcg.chat.ChatGameImpl;
+import info.asdev.fadcg.chat.ChatGameType;
 import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import info.asdev.fadcg.managers.reaction.Reward;
 import info.asdev.fadcg.utils.Job;
@@ -134,7 +133,7 @@ public class ChatManager {
         startTime = System.currentTimeMillis();
     }
 
-    public void runSpecificReaction(ReactionCategory category, ReactionImpl implementation, boolean force) {
+    public void runSpecificReaction(ReactionCategory category, ChatGameImpl implementation, boolean force) {
         if ((running || Bukkit.getOnlinePlayers().size() < minPlayers)) {
             return;
         }
@@ -176,11 +175,11 @@ public class ChatManager {
     }
 
     @SuppressWarnings("deprecation")
-    public void onPlayerEvent(ReactionMode mode, Event event) {
+    public void onPlayerEvent(ChatGameType mode, Event event) {
         if (active == null || !running) {
             return;
         }
-        ReactionMode activeMode = active.getMode();
+        ChatGameType activeMode = active.getMode();
         if (!mode.equals(activeMode)) {
             return;
         }
@@ -253,7 +252,7 @@ public class ChatManager {
     }
 
     public void awardPlayer(Player who) {
-        ReactionImpl activeImpl = active.getActiveImplementation();
+        ChatGameImpl activeImpl = active.getActiveImplementation();
         String reward = activeImpl.getReward();
 
         this.reward = reward.equalsIgnoreCase("random") ? RewardManager.getRandomReward() : RewardManager.getReward(reward);

@@ -2,14 +2,20 @@ package info.asdev.fadcg.commands.fadcg.subcommands;
 
 import info.asdev.aslib.commands.Command;
 import info.asdev.aslib.commands.PluginCommand;
-import info.asdev.fadcg.chat.ReactionImpl;
+import info.asdev.aslib.commands.PluginSubcommand;
+import info.asdev.fadcg.chat.ChatGameImpl;
 import info.asdev.fadcg.managers.ChatManager;
 import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import info.asdev.fadcg.utils.Text;
 import org.bukkit.command.CommandSender;
 
 @Command(name = "run-now", permission = "fadcg.admin.run-now")
-public class SubcommandRun extends PluginCommand {
+public class SubcommandRun extends PluginSubcommand {
+
+    public SubcommandRun(PluginCommand parent) {
+        super(parent);
+    }
+
     protected void execute(CommandSender sender, String s, String[] args) {
         if (args.length >= 1) {
             String category = args[0].toLowerCase(), id;
@@ -25,7 +31,7 @@ public class SubcommandRun extends PluginCommand {
                 return;
             }
 
-            ReactionImpl impl = null;
+            ChatGameImpl impl = null;
             if (args.length >= 2) {
                 id = args[1].toLowerCase();
                 impl = categoryImpl.getImplementationByPath(id.toLowerCase());

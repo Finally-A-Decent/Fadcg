@@ -1,7 +1,7 @@
 package info.asdev.fadcg.chat.categories;
 
-import info.asdev.fadcg.chat.ReactionImpl;
-import info.asdev.fadcg.chat.ReactionMode;
+import info.asdev.fadcg.chat.ChatGameImpl;
+import info.asdev.fadcg.chat.ChatGameType;
 import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import info.asdev.fadcg.utils.Text;
 import lombok.Getter;
@@ -18,13 +18,13 @@ import java.util.logging.Level;
 
 public class ReactionBlockBreak extends ReactionCategory {
     private List<Material> toBreak;
-    @Getter private final ReactionMode mode = ReactionMode.BLOCK_BREAK;
+    @Getter private final ChatGameType mode = ChatGameType.BLOCK_BREAK;
 
     public ReactionBlockBreak(Plugin plugin, String id, File file) {
         super(plugin, id, file);
     }
 
-    @Override public void init(ReactionImpl implementation) {
+    @Override public void init(ChatGameImpl implementation) {
         toBreak = new ArrayList<>();
         List<String> blocks = implementation.hasMultipleAnswers() ? implementation.getAnswers() : List.of(implementation.getAnswer());
 

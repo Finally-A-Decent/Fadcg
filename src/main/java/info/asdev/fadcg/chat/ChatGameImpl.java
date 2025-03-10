@@ -8,7 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.List;
 
 @Getter
-public class ReactionImpl {
+public class ChatGameImpl {
     private String id;
     private String path;
     private String type;
@@ -18,7 +18,7 @@ public class ReactionImpl {
 
     private String answer;
 
-    public ReactionImpl(String id, String path, String type, String question, List<String> answers, String reward) {
+    public ChatGameImpl(String id, String path, String type, String question, List<String> answers, String reward) {
         this.id = id;
         this.path = path;
         this.type = type;

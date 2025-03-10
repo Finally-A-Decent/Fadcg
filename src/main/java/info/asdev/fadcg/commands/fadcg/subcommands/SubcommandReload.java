@@ -2,6 +2,7 @@ package info.asdev.fadcg.commands.fadcg.subcommands;
 
 import info.asdev.aslib.commands.Command;
 import info.asdev.aslib.commands.PluginCommand;
+import info.asdev.aslib.commands.PluginSubcommand;
 import info.asdev.fadcg.Fadcg;
 import info.asdev.fadcg.managers.ChatManager;
 import info.asdev.fadcg.managers.ReactionManager;
@@ -12,7 +13,12 @@ import org.bukkit.command.CommandSender;
 import java.util.logging.Level;
 
 @Command(name = "reload", permission = "fadcg.admin.reload")
-public class SubcommandReload extends PluginCommand {
+public class SubcommandReload extends PluginSubcommand {
+
+    public SubcommandReload(PluginCommand parent) {
+        super(parent);
+    }
+
     protected void execute(CommandSender sender, String alias, String[] args) {
         try {
             Fadcg.getInstance().reloadConfig();

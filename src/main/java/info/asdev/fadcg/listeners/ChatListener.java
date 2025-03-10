@@ -1,6 +1,6 @@
 package info.asdev.fadcg.listeners;
 
-import info.asdev.fadcg.chat.ReactionMode;
+import info.asdev.fadcg.chat.ChatGameType;
 import info.asdev.fadcg.managers.ChatManager;
 import info.asdev.fadcg.utils.Text;
 import io.papermc.paper.event.player.PlayerTradeEvent;
@@ -24,7 +24,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        ChatManager.getInstance().onPlayerEvent(ReactionMode.CHAT_MESSAGE, event);
+        ChatManager.getInstance().onPlayerEvent(ChatGameType.CHAT_MESSAGE, event);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -33,7 +33,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        ChatManager.getInstance().onPlayerEvent(ReactionMode.BLOCK_BREAK, event);
+        ChatManager.getInstance().onPlayerEvent(ChatGameType.BLOCK_BREAK, event);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -42,7 +42,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        ChatManager.getInstance().onPlayerEvent(ReactionMode.BLOCK_PLACE, event);
+        ChatManager.getInstance().onPlayerEvent(ChatGameType.BLOCK_PLACE, event);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -51,7 +51,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        ChatManager.getInstance().onPlayerEvent(ReactionMode.CRAFT_ITEM, event);
+        ChatManager.getInstance().onPlayerEvent(ChatGameType.CRAFT_ITEM, event);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -60,7 +60,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        ChatManager.getInstance().onPlayerEvent(ReactionMode.USE_ITEM, event);
+        ChatManager.getInstance().onPlayerEvent(ChatGameType.USE_ITEM, event);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -72,7 +72,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        ChatManager.getInstance().onPlayerEvent(ReactionMode.KILL_MOB, event);
+        ChatManager.getInstance().onPlayerEvent(ChatGameType.KILL_MOB, event);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -81,7 +81,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        ChatManager.getInstance().onPlayerEvent(ReactionMode.VILLAGER_TRADE, event);
+        ChatManager.getInstance().onPlayerEvent(ChatGameType.VILLAGER_TRADE, event);
     }
 
 

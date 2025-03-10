@@ -17,11 +17,11 @@ public class CommandFadcg extends PluginCommand {
 
     protected void registerSubcommands() {
         Stream.of(
-                new SubcommandAbout(),
-                new SubcommandReload(),
-                new SubcommandConfig(),
-                new SubcommandRun(),
-                new SubcommandStop()
+                new SubcommandAbout(this),
+                new SubcommandReload(this),
+                //new SubcommandConfig(this), // To be added
+                new SubcommandRun(this),
+                new SubcommandStop(this)
         ).forEach(this::registerSubcommand);
     }
 }

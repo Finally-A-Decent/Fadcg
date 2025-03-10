@@ -1,12 +1,11 @@
 package info.asdev.fadcg.chat.categories;
 
-import info.asdev.fadcg.chat.ReactionImpl;
+import info.asdev.fadcg.chat.ChatGameImpl;
 import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import info.asdev.fadcg.utils.Text;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -19,7 +18,7 @@ public class ReactionType extends ReactionCategory {
         super(plugin, id, file);
     }
 
-    public void init(ReactionImpl implementation) {
+    public void init(ChatGameImpl implementation) {
         answer = implementation.getAnswer();
     }
 

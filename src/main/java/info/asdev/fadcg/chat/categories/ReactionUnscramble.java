@@ -1,13 +1,11 @@
 package info.asdev.fadcg.chat.categories;
 
-import info.asdev.fadcg.chat.ReactionImpl;
+import info.asdev.fadcg.chat.ChatGameImpl;
 import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import info.asdev.fadcg.utils.Text;
-import info.asdev.fadcg.utils.Util;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -20,7 +18,7 @@ public class ReactionUnscramble extends ReactionCategory {
         super(plugin, id, file);
     }
 
-    @Override public void init(ReactionImpl implementation) {
+    @Override public void init(ChatGameImpl implementation) {
         answer = implementation.getAnswer();
         question = Text.scramble(answer);
     }

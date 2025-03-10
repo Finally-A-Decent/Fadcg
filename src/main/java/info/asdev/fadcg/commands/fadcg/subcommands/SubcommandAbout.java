@@ -2,12 +2,18 @@ package info.asdev.fadcg.commands.fadcg.subcommands;
 
 import info.asdev.aslib.commands.Command;
 import info.asdev.aslib.commands.PluginCommand;
+import info.asdev.aslib.commands.PluginSubcommand;
 import info.asdev.fadcg.Fadcg;
 import info.asdev.fadcg.utils.Text;
 import org.bukkit.command.CommandSender;
 
 @Command(name = "about")
-public class SubcommandAbout extends PluginCommand {
+public class SubcommandAbout extends PluginSubcommand
+{
+    public SubcommandAbout(PluginCommand parent) {
+        super(parent);
+    }
+
     @Override protected void execute(CommandSender sender, String s, String[] strings) {
         Text.sendNoFetch(sender, String.format("""
                     &#9555ffFADCG&7 - &c%s&r

@@ -1,12 +1,11 @@
 package info.asdev.fadcg.chat.categories;
 
-import info.asdev.fadcg.chat.ReactionImpl;
+import info.asdev.fadcg.chat.ChatGameImpl;
 import info.asdev.fadcg.managers.reaction.ReactionCategory;
 import info.asdev.fadcg.utils.Text;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -19,7 +18,7 @@ public class ReactionReverse extends ReactionCategory {
         super(plugin, id, file);
     }
 
-    @Override public void init(ReactionImpl implementation) {
+    @Override public void init(ChatGameImpl implementation) {
         question = implementation.getQuestion();
         answer = implementation.getAnswer();
     }
