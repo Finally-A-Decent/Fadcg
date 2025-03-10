@@ -1,0 +1,105 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+plugins {
+    java
+    `maven-publish`
+    id("org.ajoberstar.grgit") version "5.3.0"
+    id("com.gradleup.shadow") version "8.3.0"
+}
+
+var currentBranch: String = grgit.branch.current().name
+if (currentBranch != "master") {
+    println("Starting in development mode")
+}
+
+allprojects {
+    group = "info.asdev.fadcg"
+    version = "1.0.0"
+
+    repositories {
+        mavenCentral()
+        maven(url = "https://repo.clojars.org/")
+        maven(url = "https://repo.extendedclip.com/content/repositories/placeholderapi/")
+        maven(url = "https://repo.papermc.io/repository/maven-public/")
+        if (currentBranch != "master") configureFinallyADecentRepository(dev = true)
+        configureFinallyADecentRepository()
+    }
+
+    dependencies {
+        compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+
+        compileOnly("me.clip:placeholderapi:2.11.6")
+        implementation("com.github.puregero:multilib:1.2.4")
+
+        annotationProcessor("org.projectlombok:lombok:1.18.30")
+        compileOnly("org.projectlombok:lombok:1.18.30")
+
+        testImplementation("com.github.seeseemelk:MockBukkit-v1.20:3.93.2")
+        testImplementation("com.github.puregero:multilib:1.2.4")
+
+        testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
+        testImplementation("org.junit.jupiter:junit-jupiter-params:5.11.4")
+        testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.4")
+    }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
+tasks.withType<ShadowJar> {
+    archiveClassifier.set("")
+    exclude(
+        "META-INF/maven"
+    )
+}
+
+tasks.withType<JavaCompile> {
+    options.compilerArgs.add("-parameters")
+    options.fork()
+    options.encoding = "UTF-8"
+}
+
+publishing {
+    repositories.configureFinallyADecentRepository(
+        dev = currentBranch != "master"
+    )
+
+    publications {
+        register(
+            name = "mavenJava",
+            type = MavenPublication::class,
+            configurationAction = shadow::component
+        )
+    }
+}
+
+tasks.getByName("build")
+    .dependsOn(
+        "shadowJar"
+    )
+
+tasks.register("publishAll") {
+    dependsOn("publishMavenJavaPublicationToFinallyADecentRepository")
+}
+
+fun RepositoryHandler.configureFinallyADecentRepository(dev: Boolean = false)
+{
+    val user: String? = properties["fad_username"]?.toString()
+    val pass: String? = properties["fad_password"]?.toString()
+
+    if (user != null && pass != null) {
+        maven("https://repo.preva1l.info/${if (dev) "development" else "releases"}/") {
+            name = "FinallyADecent"
+            credentials {
+                username = user
+                password = pass
+            }
+        }
+        return
+    }
+
+    maven("https://repo.preva1l.info/${if (dev) "development" else "releases"}/") {
+        name = "FinallyADecent"
+    }
+}
